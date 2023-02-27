@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);./headers;C:\Users\vital\source\repos\New Primer\Primer\headers</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);./headers;C:\Users\vital\source\repos\New Primer\Primer\headers</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -127,51 +133,54 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Basket.cpp" />
-    <ClCompile Include="Blob.cpp" />
-    <ClCompile Include="Chapter12.cpp" />
-    <ClCompile Include="Chapter13.cpp" />
-    <ClCompile Include="Chapter14.cpp" />
-    <ClCompile Include="Chapter15.cpp" />
-    <ClCompile Include="Chapter16.cpp" />
-    <ClCompile Include="Employee.cpp" />
-    <ClCompile Include="HasPtr.cpp" />
-    <ClCompile Include="HasPtr.h" />
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="MyGeometry.cpp" />
-    <ClCompile Include="MyTextQuery.cpp" />
-    <ClCompile Include="numbered.cpp" />
-    <ClCompile Include="Query_base.cpp" />
-    <ClCompile Include="Quote.cpp" />
-    <ClCompile Include="Sales_data.cpp" />
-    <ClCompile Include="StrBlob.cpp" />
-    <ClCompile Include="String.cpp" />
-    <ClCompile Include="StrVec.cpp" />
-    <ClCompile Include="TextQuery.cpp" />
-    <ClCompile Include="TreeNode.cpp" />
+    <ClCompile Include="source files\Basket.cpp" />
+    <ClCompile Include="source files\Blob.cpp" />
+    <ClCompile Include="Chapter 12\Chapter12.cpp" />
+    <ClCompile Include="Chapter 13\Chapter13.cpp" />
+    <ClCompile Include="Chapter 14\Chapter14.cpp" />
+    <ClCompile Include="Chapter 15\Chapter15.cpp" />
+    <ClCompile Include="Chapter 16\Chapter16.cpp" />
+    <ClCompile Include="source files\Employee.cpp" />
+    <ClCompile Include="source files\HasPtr.cpp" />
+    <ClCompile Include="headers\HasPtr.h" />
+    <ClCompile Include="source files\Message.cpp" />
+    <ClCompile Include="source files\MyGeometry.cpp" />
+    <ClCompile Include="source files\MyTextQuery.cpp" />
+    <ClCompile Include="source files\numbered.cpp" />
+    <ClCompile Include="source files\Query_base.cpp" />
+    <ClCompile Include="source files\Quote.cpp" />
+    <ClCompile Include="source files\Sales_data.cpp" />
+    <ClCompile Include="source files\StrBlob.cpp" />
+    <ClCompile Include="source files\_String.cpp" />
+    <ClCompile Include="source files\StrVec.cpp" />
+    <ClCompile Include="source files\TextQuery.cpp" />
+    <ClCompile Include="source files\TreeNode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Base.h" />
-    <ClInclude Include="Basket.h" />
-    <ClInclude Include="Blob.h" />
-    <ClInclude Include="Calculator.h" />
-    <ClInclude Include="Employee.h" />
-    <ClInclude Include="Foo.h" />
-    <ClInclude Include="isEqual.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include="MyGeometry.h" />
-    <ClInclude Include="MyTextQuery.h" />
-    <ClInclude Include="numbered.h" />
-    <ClInclude Include="ioString.h" />
-    <ClInclude Include="Query_base.h" />
-    <ClInclude Include="Quote.h" />
-    <ClInclude Include="Sales_data.h" />
-    <ClInclude Include="SmallInt.h" />
-    <ClInclude Include="StrBlob.h" />
-    <ClInclude Include="String.h" />
-    <ClInclude Include="StrVec.h" />
-    <ClInclude Include="TextQuery.h" />
-    <ClInclude Include="TreeNode.h" />
+    <ClInclude Include="headers\Base.h" />
+    <ClInclude Include="headers\Basket.h" />
+    <ClInclude Include="headers\Blob.h" />
+    <ClInclude Include="headers\Calculator.h" />
+    <ClInclude Include="headers\Employee.h" />
+    <ClInclude Include="headers\Foo.h" />
+    <ClInclude Include="headers\isEqual.h" />
+    <ClInclude Include="headers\Message.h" />
+    <ClInclude Include="headers\MyGeometry.h" />
+    <ClInclude Include="headers\MyTextQuery.h" />
+    <ClInclude Include="headers\numbered.h" />
+    <ClInclude Include="headers\ioString.h" />
+    <ClInclude Include="headers\Query_base.h" />
+    <ClInclude Include="headers\Quote.h" />
+    <ClInclude Include="headers\Sales_data.h" />
+    <ClInclude Include="headers\SmallInt.h" />
+    <ClInclude Include="headers\StrBlob.h" />
+    <ClInclude Include="headers\_String.h" />
+    <ClInclude Include="headers\StrVec.h" />
+    <ClInclude Include="headers\TextQuery.h" />
+    <ClInclude Include="headers\TreeNode.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\text.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

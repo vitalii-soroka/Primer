@@ -7,7 +7,7 @@
 #include "Message.h"
 #include <algorithm>
 #include "StrVec.h"
-#include "String.h"
+#include "_String.h"
 #include "Foo.h"
 
 void Exercise13_5() {
@@ -88,7 +88,6 @@ void Exercise13_27() {
 
 }
 void Exercise13_28() {
-
 	auto root = TreeNode("root");
 	auto left = TreeNode("left");
 	auto right = TreeNode("right");
@@ -152,7 +151,7 @@ void Exercise13_43() {
 void Exercise13_44() {
 	const char ca[] = "hello";
 	const char* cp = ca;
-	String st(cp), st1("hello"), st2;
+	_String st(cp), st1("hello"), st2;
 	st.print();
 	st = st1;
 	st1.print();
@@ -169,8 +168,8 @@ void Exercise13_45() {
 
 }
 void Exercise13_48_50() {
-	std::vector<String> svec;
-	String s;
+	std::vector<_String> svec;
+	_String s;
 	for (int i = 0; i != 4; ++i) {
 		std::cout << i << ' ';
 		svec.push_back(s);			// copy operator called

@@ -2,24 +2,24 @@
 #include <memory>
 #include <iostream>
 
-class String {
-	friend std::ostream& operator<<(std::ostream&, const String&);
-	friend bool operator==(const String&, const String&);
-	friend bool operator!=(const String&, const String&);
+class _String {
+	friend std::ostream& operator<<(std::ostream&, const _String&);
+	friend bool operator==(const _String&, const _String&);
+	friend bool operator!=(const _String&, const _String&);
 public:
-	String():
+	_String():
 		elements(nullptr),
 		first_free(nullptr),
 		cap(nullptr) {} 
 
-	String(const char*);
-	String(const String&);
-	String(String&&) noexcept;
-	String& operator=(String&&) noexcept;
-	String& operator=(const String&);
+	_String(const char*);
+	_String(const _String&);
+	_String(_String&&) noexcept;
+	_String& operator=(_String&&) noexcept;
+	_String& operator=(const _String&);
 	char& operator[](std::size_t n) { return elements[n]; }
 	const char& operator[](std::size_t n) const { return elements[n]; }
-	~String() { free(); }
+	~_String() { free(); }
 
 	size_t capacity() const { return cap - elements; }
 	size_t size() const { return first_free - elements;  }

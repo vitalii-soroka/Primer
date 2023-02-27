@@ -1,5 +1,5 @@
-
-#include "String.h"
+#pragma once
+#include "_String.h"
 #include "StrBlob.h"
 #include "Sales_data.h"
 #include "StrVec.h"
@@ -13,7 +13,7 @@
 
 void Exercise14_5() {
 
-	String s("Hello");
+	_String s("Hello");
 	std::cout << s << std::endl;
 }
 void Exercise14_10() {
@@ -30,8 +30,8 @@ void Exercise14_16() {
 	StrBlob b1({ "Hello", "world", "no"});
 	StrBlob b2({ "Hello", "world", "no"});
 	std::cout << (b1 != b2) << std::endl;
-	String s1("Hello");
-	String s2("Hello");
+	_String s1("Hello");
+	_String s2("Hello");
 	std::cout << (s1 != s2) << std::endl;
 	StrVec sv1({ "hey" });
 	StrVec sv2({ "hey" });
