@@ -27,136 +27,139 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Chapter12.cpp">
+    <ClCompile Include="Chapter 12\Chapter12.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Chapter13.cpp">
+    <ClCompile Include="Chapter 13\Chapter13.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="HasPtr.cpp">
+    <ClCompile Include="source files\HasPtr.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="HasPtr.h">
+    <ClCompile Include="headers\HasPtr.h">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="numbered.cpp">
+    <ClCompile Include="source files\numbered.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="Employee.cpp">
+    <ClCompile Include="source files\Employee.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="StrBlob.cpp">
+    <ClCompile Include="source files\StrBlob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TreeNode.cpp">
+    <ClCompile Include="source files\TreeNode.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="Message.cpp">
+    <ClCompile Include="source files\Message.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="StrVec.cpp">
+    <ClCompile Include="source files\StrVec.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="MyTextQuery.cpp">
+    <ClCompile Include="source files\MyTextQuery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="String.cpp">
+    <ClCompile Include="source files\_String.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="Chapter14.cpp">
+    <ClCompile Include="Chapter 14\Chapter14.cpp">
       <Filter>Chapter14</Filter>
     </ClCompile>
-    <ClCompile Include="Sales_data.cpp">
+    <ClCompile Include="source files\Sales_data.cpp">
       <Filter>Chapter14</Filter>
     </ClCompile>
-    <ClCompile Include="Chapter15.cpp">
+    <ClCompile Include="Chapter 15\Chapter15.cpp">
       <Filter>Chapter15</Filter>
     </ClCompile>
-    <ClCompile Include="Quote.cpp">
+    <ClCompile Include="source files\Quote.cpp">
       <Filter>Chapter15</Filter>
     </ClCompile>
-    <ClCompile Include="MyGeometry.cpp">
+    <ClCompile Include="source files\MyGeometry.cpp">
       <Filter>Chapter15</Filter>
     </ClCompile>
-    <ClCompile Include="Basket.cpp">
+    <ClCompile Include="source files\Basket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextQuery.cpp">
+    <ClCompile Include="source files\TextQuery.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Query_base.cpp">
+    <ClCompile Include="source files\Query_base.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Chapter16.cpp">
+    <ClCompile Include="Chapter 16\Chapter16.cpp">
       <Filter>Chapter16</Filter>
     </ClCompile>
-    <ClCompile Include="Blob.cpp">
+    <ClCompile Include="source files\Blob.cpp">
       <Filter>Chapter16</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="numbered.h">
+    <ClInclude Include="headers\numbered.h">
       <Filter>Chapter13</Filter>
     </ClInclude>
-    <ClInclude Include="Employee.h">
+    <ClInclude Include="headers\Employee.h">
       <Filter>Chapter13</Filter>
     </ClInclude>
-    <ClInclude Include="StrBlob.h">
+    <ClInclude Include="headers\StrBlob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TreeNode.h">
+    <ClInclude Include="headers\TreeNode.h">
       <Filter>Chapter13</Filter>
     </ClInclude>
-    <ClInclude Include="Message.h">
+    <ClInclude Include="headers\Message.h">
       <Filter>Chapter13</Filter>
     </ClInclude>
-    <ClInclude Include="StrVec.h">
+    <ClInclude Include="headers\StrVec.h">
       <Filter>Chapter13</Filter>
     </ClInclude>
-    <ClInclude Include="MyTextQuery.h">
+    <ClInclude Include="headers\MyTextQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="String.h">
+    <ClInclude Include="headers\_String.h">
       <Filter>Chapter13</Filter>
     </ClInclude>
-    <ClInclude Include="Foo.h">
+    <ClInclude Include="headers\Foo.h">
       <Filter>Chapter13</Filter>
     </ClInclude>
-    <ClInclude Include="Sales_data.h">
+    <ClInclude Include="headers\Sales_data.h">
       <Filter>Chapter14</Filter>
     </ClInclude>
-    <ClInclude Include="ioString.h">
+    <ClInclude Include="headers\ioString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="isEqual.h">
+    <ClInclude Include="headers\isEqual.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Calculator.h">
+    <ClInclude Include="headers\Calculator.h">
       <Filter>Chapter14</Filter>
     </ClInclude>
-    <ClInclude Include="SmallInt.h">
+    <ClInclude Include="headers\SmallInt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Quote.h">
+    <ClInclude Include="headers\Quote.h">
       <Filter>Chapter15</Filter>
     </ClInclude>
-    <ClInclude Include="Base.h">
+    <ClInclude Include="headers\Base.h">
       <Filter>Chapter15</Filter>
     </ClInclude>
-    <ClInclude Include="MyGeometry.h">
+    <ClInclude Include="headers\MyGeometry.h">
       <Filter>Chapter15</Filter>
     </ClInclude>
-    <ClInclude Include="Basket.h">
+    <ClInclude Include="headers\Basket.h">
       <Filter>Chapter15</Filter>
     </ClInclude>
-    <ClInclude Include="Query_base.h">
+    <ClInclude Include="headers\Query_base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextQuery.h">
+    <ClInclude Include="headers\TextQuery.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Blob.h">
+    <ClInclude Include="headers\Blob.h">
       <Filter>Chapter16</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\text.txt" />
   </ItemGroup>
 </Project>

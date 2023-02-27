@@ -1,7 +1,6 @@
-#include "String.h";
+#include "_String.h"
 
-
-String::String(const char* b)
+_String::_String(const char* b)
 {
 	auto e = b;
 	while (*e != '\0') ++e;
@@ -11,20 +10,20 @@ String::String(const char* b)
 	first_free = cap = newdata.second;
 
 }
-String::String(const String& s)
+_String::_String(const _String& s)
 {
 	std::cout << "String copy called" << std::endl;
 	auto newdata = alloc_n_copy(s.begin(), s.end());
 	elements = newdata.first;
 	first_free = cap = newdata.second;
 }
-String::String(String&& s) noexcept : 
+_String::_String(_String&& s) noexcept : 
 	cap(s.cap), elements(s.elements), first_free(s.first_free)
 {
 	std::cout << "String(String&&) - called" << std::endl;
 	s.cap = s.elements = s.first_free = nullptr;
 }
-String& String::operator=(String&& rhs) noexcept
+_String& _String::operator=(_String&& rhs) noexcept
 {
 	std::cout << "operator=(String&&) - called" << std::endl;
 	if (this != &rhs) {
@@ -37,7 +36,7 @@ String& String::operator=(String&& rhs) noexcept
 	}
 	return *this;
 }
-String& String::operator=(const String& rhs)
+_String& _String::operator=(const _String& rhs)
 {
 	std::cout << "String operator= called" << std::endl;
 	auto newdata = alloc_n_copy(rhs.begin(), rhs.end());
@@ -47,7 +46,7 @@ String& String::operator=(const String& rhs)
 	return *this;
 	
 }
-void String::print() const
+void _String::print() const
 {
 	for (auto p = elements; p != first_free; ++p) {
 		std::cout << *p;
@@ -55,14 +54,14 @@ void String::print() const
 	std::cout << std::endl;
 
 }
-std::pair<char*, char*> String::alloc_n_copy(const char* b, const char* e)
+std::pair<char*, char*> _String::alloc_n_copy(const char* b, const char* e)
 {
 	// alocated space (uninitialized) to hold elements in range
 	auto data = alloc.allocate(e - b);
 	// pair of first and one past last element, copy returns pointer to past last?
 	return { data, std::uninitialized_copy(b,e, data) };
 }
-void String::free()
+void _String::free()
 {
 	if (elements) {
 		for (auto p = first_free; p != elements; )
@@ -71,19 +70,19 @@ void String::free()
 	}
 }
 
-std::ostream& operator<<(std::ostream& os, const String& s)
+std::ostream& operator<<(std::ostream& os, const _String& s)
 {
 	for (auto it = s.begin(); it != s.end(); ++it) os << *it;
 	return os;
 }
 
-bool operator==(const String& lhs, const String& rhs)
+bool operator==(const _String& lhs, const _String& rhs)
 {
 	
 	return lhs.size() == rhs.size()  ?
 		std::equal(lhs.begin(), lhs.end(), rhs.begin()) : false;
 }
-bool operator!=(const String& lhs, const String& rhs)
+bool operator!=(const _String& lhs, const _String& rhs)
 {
 	return !(lhs == rhs);
 }
