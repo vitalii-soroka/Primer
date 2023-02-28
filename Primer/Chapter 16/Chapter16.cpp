@@ -2,6 +2,7 @@
 #include "Sales_data.h"
 #include <algorithm>
 #include <vector>
+#include "BlobPtr.h"
 
 // Exercise 16.11 
 template <typename elemType> class ListItem;
@@ -91,6 +92,20 @@ void Exercise16_8() {
 	// So template class require less to work
 	// for example some pointers or iterators
 }
+void Exercise16_12() {
+	Blob<int> blob;
+	Blob<int> blobV({ 1,2,3, });
+	//blob.push_back(1);
+	std::cout << blobV.back() << std::endl;
+	Blob<int> blob1({1,2,3});
+	Blob<int> blob2({1,2,3});
+
+	BlobPtr<int> blobptr1(blob1,2);
+	BlobPtr<int> blobptr2(blob1,0);
+	std::cout << "BlobPtr's not equal: " << (blobptr1 != blobptr2) << std::endl;
+	std::cout << "BlobPtr's smaller: " << (blobptr1 < blobptr2) << std::endl;
+	std::cout << *(--blobptr1) << std::endl;
+}
 
 template<typename T> using _twin = std::pair<T, T>;
 void TestTwins() {
@@ -100,7 +115,7 @@ void TestTwins() {
 
 int main() {
 	
-
+	Exercise16_12();
 	Exercise16_7();
 	Exercise16_6();
 	Exercise16_5();

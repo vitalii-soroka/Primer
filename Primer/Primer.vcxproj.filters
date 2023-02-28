@@ -36,9 +36,6 @@
     <ClCompile Include="source files\HasPtr.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
-    <ClCompile Include="headers\HasPtr.h">
-      <Filter>Chapter13</Filter>
-    </ClCompile>
     <ClCompile Include="source files\numbered.cpp">
       <Filter>Chapter13</Filter>
     </ClCompile>
@@ -88,9 +85,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Chapter 16\Chapter16.cpp">
-      <Filter>Chapter16</Filter>
-    </ClCompile>
-    <ClCompile Include="source files\Blob.cpp">
       <Filter>Chapter16</Filter>
     </ClCompile>
   </ItemGroup>
@@ -157,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="headers\Blob.h">
       <Filter>Chapter16</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\BlobPtr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\HasPtr.h">
+      <Filter>Chapter13</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

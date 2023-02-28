@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);./headers;C:\Users\vital\source\repos\New Primer\Primer\headers</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);./headers;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);./headers;C:\Users\vital\source\repos\New Primer\Primer\headers</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);./headers;</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -134,7 +134,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source files\Basket.cpp" />
-    <ClCompile Include="source files\Blob.cpp" />
     <ClCompile Include="Chapter 12\Chapter12.cpp" />
     <ClCompile Include="Chapter 13\Chapter13.cpp" />
     <ClCompile Include="Chapter 14\Chapter14.cpp" />
@@ -142,7 +141,7 @@
     <ClCompile Include="Chapter 16\Chapter16.cpp" />
     <ClCompile Include="source files\Employee.cpp" />
     <ClCompile Include="source files\HasPtr.cpp" />
-    <ClCompile Include="headers\HasPtr.h" />
+    <ClInclude Include="headers\HasPtr.h" />
     <ClCompile Include="source files\Message.cpp" />
     <ClCompile Include="source files\MyGeometry.cpp" />
     <ClCompile Include="source files\MyTextQuery.cpp" />
@@ -160,6 +159,7 @@
     <ClInclude Include="headers\Base.h" />
     <ClInclude Include="headers\Basket.h" />
     <ClInclude Include="headers\Blob.h" />
+    <ClInclude Include="headers\BlobPtr.h" />
     <ClInclude Include="headers\Calculator.h" />
     <ClInclude Include="headers\Employee.h" />
     <ClInclude Include="headers\Foo.h" />
