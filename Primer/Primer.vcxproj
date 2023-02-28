@@ -172,6 +172,7 @@
     <ClInclude Include="headers\Query_base.h" />
     <ClInclude Include="headers\Quote.h" />
     <ClInclude Include="headers\Sales_data.h" />
+    <ClInclude Include="headers\Screen.h" />
     <ClInclude Include="headers\SmallInt.h" />
     <ClInclude Include="headers\StrBlob.h" />
     <ClInclude Include="headers\_String.h" />
