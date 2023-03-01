@@ -125,6 +125,9 @@ void Exercise16_16() {
 	svec.print_info(std::cout);
 }
 
+void Exercise16_18() {
+	
+}
 
 template<typename T> using _twin = std::pair<T, T>;
 void TestTwins() {
@@ -132,7 +135,53 @@ void TestTwins() {
 	_twin<int> win_lose;
 }
 
+//template <typename T, typename U, typename V> void f1(T, U, V);
+// illegal U needs name ^^^^^  
+
+//template<typename T> T f2( /*int*/&T);
+// T already a template type ^^^ 
+
+// /*inline*/ template<typename T> inline T foo(T, unsigned int*);
+// ^^^ illegal, inline   after   ^^^^^  template 
+
+//template <typename T> void f4(T, T);
+// return type		 ^^^^^^
+
+//typedef char Ctype;
+//template <typename Ctype> Ctype f5(Ctype a);
+// typename hides typedef
+
+template <typename T> 
+void ex16_19(T& container) {
+	for (typename T::size_type i = 0; i < container.size(); ++i) {
+		std::cout << container[i] << " ";
+	}
+	std::cout << std::endl;
+}
+
+void Exercise16_19() {
+	std::vector<int> vec{ 1,2,7,9,0,34,7,8};
+	ex16_19(vec);
+}
+
+template <typename T>
+void ex16_20(T& container) {
+	for (typename T::iterator it = container.begin(); it != container.end(); ++it) {
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+}
+
+void Exercise16_20() {
+	std::vector<int> vec{ 1,2,7,9,0,34,7,8 };
+	ex16_20(vec);
+}
+
+
 int main() {
+
+	Exercise16_20();
+	Exercise16_19();
 	Exercise16_16();
 	Exercise16_15();
 	Exercise16_14();
