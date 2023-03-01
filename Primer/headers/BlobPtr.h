@@ -4,7 +4,6 @@
 
 #include "Blob.h"
 
-
 template <typename T> class BlobPtr;
 
 template<typename T>

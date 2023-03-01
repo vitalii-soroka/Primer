@@ -66,7 +66,7 @@ StrVec::alloc_n_copy(const std::string* b, const std::string* e)
 void StrVec::free() {
 	// 0 - or null poiter
 	if (elements) {
-		std::for_each(first_free, first_free,
+		std::for_each(elements, first_free,
 			[&](std::string& p) { alloc.destroy(&p); });
 		alloc.deallocate(elements, capacity());
 		//for (auto p = first_free; p != elements; /**/)
