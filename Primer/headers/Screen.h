@@ -10,12 +10,16 @@ template<unsigned, unsigned> class Screen;
 template<unsigned h, unsigned w>
 std::ostream& operator<< (std::ostream&, const Screen<h,w>&);
 
+template<unsigned h, unsigned w>
+std::istream& operator>> (std::istream&, Screen<h,w>&);
+
 template<unsigned _h, unsigned _w>
 class Screen {
 	typedef std::string::size_type pos;
-	friend std::ostream& operator<< <_h,_w> (std::ostream&, const Screen<_h,_w>&);
+	friend std::ostream& operator<< <> (std::ostream&, const Screen&);
+	friend std::istream& operator>> <> (std::istream&, Screen&);
 public:
-	Screen() = default;
+	Screen() : height(_h), width(_w), contents("") {}
 	Screen(char c) : height(_h), width(_w), contents(_h* _w, c) {}
 
 	char get() const { return contents[cursor]; }
@@ -42,6 +46,14 @@ std::ostream& operator<<(std::ostream& os, const Screen<h,w>& screen) {
 		os << screen.contents.substr(0, w) << std::endl;
 	}
 	return os;
+}
+template<unsigned h, unsigned w>
+std::istream& operator>>(std::istream& is, Screen<h, w>& screen) {
+	char input;
+	is >> input;
+	std::string temp(h * w,input);
+	screen.contents = temp;
+	return is;
 }
 
 #endif // SCREEN_H

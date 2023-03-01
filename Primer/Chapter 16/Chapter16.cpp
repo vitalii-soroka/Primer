@@ -107,9 +107,16 @@ void Exercise16_12() {
 	std::cout << "BlobPtr's smaller: " << (blobptr1 < blobptr2) << std::endl;
 	std::cout << *(--blobptr1) << std::endl;
 }
-void Exercise16_15() {
+void Exercise16_14() {
 	Screen<2,5> screen('c');
-	std::cout << screen;
+	screen.move(1, 4);
+	
+}
+void Exercise16_15() {
+	Screen<8,8> screen;
+	std::cin >> screen;
+	std::cout << screen << std::endl;
+	
 }
 template<typename T> using _twin = std::pair<T, T>;
 void TestTwins() {
@@ -120,6 +127,7 @@ void TestTwins() {
 int main() {
 	
 	Exercise16_15();
+	Exercise16_14();
 	Exercise16_12();
 	Exercise16_7();
 	Exercise16_6();
