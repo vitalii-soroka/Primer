@@ -4,6 +4,7 @@
 #include <vector>
 #include "BlobPtr.h"
 #include "Screen.h"
+#include "Vec.h"
 
 // Exercise 16.11 
 template <typename elemType> class ListItem;
@@ -118,6 +119,13 @@ void Exercise16_15() {
 	std::cout << screen << std::endl;
 	
 }
+void Exercise16_16() {
+	Vec<std::string> svec({ "1", "2", "3", "4" });
+	svec.reserve(30);
+	svec.print_info(std::cout);
+}
+
+
 template<typename T> using _twin = std::pair<T, T>;
 void TestTwins() {
 	_twin<std::string> authors;
@@ -125,7 +133,7 @@ void TestTwins() {
 }
 
 int main() {
-	
+	Exercise16_16();
 	Exercise16_15();
 	Exercise16_14();
 	Exercise16_12();

@@ -175,6 +175,7 @@
     <ClInclude Include="headers\Screen.h" />
     <ClInclude Include="headers\SmallInt.h" />
     <ClInclude Include="headers\StrBlob.h" />
+    <ClInclude Include="headers\Vec.h" />
     <ClInclude Include="headers\_String.h" />
     <ClInclude Include="headers\StrVec.h" />
     <ClInclude Include="headers\TextQuery.h" />
