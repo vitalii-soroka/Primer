@@ -141,6 +141,7 @@
     <ClCompile Include="Chapter 16\Chapter16.cpp" />
     <ClCompile Include="source files\Employee.cpp" />
     <ClCompile Include="source files\HasPtr.cpp" />
+    <ClInclude Include="headers\DebugDelete.h" />
     <ClInclude Include="headers\HasPtr.h" />
     <ClCompile Include="source files\Message.cpp" />
     <ClCompile Include="source files\MyGeometry.cpp" />

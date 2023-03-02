@@ -1,10 +1,14 @@
 #include <iostream>
+#include <fstream>
 #include "Sales_data.h"
 #include <algorithm>
+#include <memory>
 #include <vector>
 #include "BlobPtr.h"
 #include "Screen.h"
 #include "Vec.h"
+#include "DebugDelete.h"
+#include "MyTextQuery.h"
 
 // Exercise 16.11 
 template <typename elemType> class ListItem;
@@ -124,7 +128,6 @@ void Exercise16_16() {
 	svec.reserve(30);
 	svec.print_info(std::cout);
 }
-
 void Exercise16_18() {
 	
 }
@@ -177,9 +180,28 @@ void Exercise16_20() {
 	ex16_20(vec);
 }
 
+void Exercise16_22() {
+	std::ifstream ifs("data/text.txt");
+	MyTextQuery text(ifs);
+	text.query("hello"); // query constructs shared_ptr with my deleter
+	// deleter deletes shared ptr in the end of this scope.
+}
+void Exercise16_24() {
+	std::vector<int> ivec{ 1,2,3,4,5,6,7 };
+	Blob<int> blob(ivec.begin(), ivec.end());
+	std::cout << "blob size: " << blob.size() << std::endl;
+}
+
+void unqTest() {
+	std::unique_ptr<int, DebugDelete> p(new int, DebugDelete());
+	std::unique_ptr<std::string, DebugDelete> sp(new std::string, DebugDelete());
+}
 
 int main() {
-
+	
+	Exercise16_22();
+	Exercise16_24();
+	unqTest();
 	Exercise16_20();
 	Exercise16_19();
 	Exercise16_16();

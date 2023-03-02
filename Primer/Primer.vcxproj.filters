@@ -164,6 +164,9 @@
     <ClInclude Include="headers\Vec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\DebugDelete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\text.txt" />

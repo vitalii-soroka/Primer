@@ -24,6 +24,8 @@ public:
 	// constructors
 	Blob();
 	Blob(std::initializer_list<T>);
+	template <typename It> Blob(It b, It e);
+	
 
 	// number of elements in the Blob
 	size_type size() const { return data->size(); }
@@ -66,6 +68,10 @@ Blob<T>::Blob() : data(std::make_shared<std::vector<T>>()){}
 template<typename T>
 Blob<T>::Blob(std::initializer_list<T> il):
 	data(std::make_shared<std::vector<T>>(il)) {}
+
+template <typename T>
+template <typename It>
+	Blob<T>::Blob(It b, It e) : data(std::make_shared<std::vector<T>>(b,e)) {}
 
 template <typename T>
 void Blob<T>::check(size_type i, const std::string& msg) const {
