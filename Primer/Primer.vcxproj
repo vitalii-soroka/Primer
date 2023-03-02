@@ -168,6 +168,7 @@
     <ClInclude Include="headers\Message.h" />
     <ClInclude Include="headers\MyGeometry.h" />
     <ClInclude Include="headers\MyTextQuery.h" />
+    <ClInclude Include="headers\my_unique_ptr.h" />
     <ClInclude Include="headers\numbered.h" />
     <ClInclude Include="headers\ioString.h" />
     <ClInclude Include="headers\Query_base.h" />

@@ -9,6 +9,7 @@
 #include "Vec.h"
 #include "DebugDelete.h"
 #include "MyTextQuery.h"
+#include "my_unique_ptr.h"
 
 // Exercise 16.11 
 template <typename elemType> class ListItem;
@@ -152,7 +153,7 @@ void TestTwins() {
 
 //typedef char Ctype;
 //template <typename Ctype> Ctype f5(Ctype a);
-// typename hides typedef
+// typename hides typedef 
 
 template <typename T> 
 void ex16_19(T& container) {
@@ -174,12 +175,10 @@ void ex16_20(T& container) {
 	}
 	std::cout << std::endl;
 }
-
 void Exercise16_20() {
 	std::vector<int> vec{ 1,2,7,9,0,34,7,8 };
 	ex16_20(vec);
 }
-
 void Exercise16_22() {
 	std::ifstream ifs("data/text.txt");
 	MyTextQuery text(ifs);
@@ -191,14 +190,36 @@ void Exercise16_24() {
 	Blob<int> blob(ivec.begin(), ivec.end());
 	std::cout << "blob size: " << blob.size() << std::endl;
 }
-
 void unqTest() {
 	std::unique_ptr<int, DebugDelete> p(new int, DebugDelete());
 	std::unique_ptr<std::string, DebugDelete> sp(new std::string, DebugDelete());
 }
 
+void Exercise16_28() {
+
+	// std unique ptr
+	int* p = new int(55);
+	std::unique_ptr<int> up(p/*new int(3)*/);
+	up.reset(new int(4));
+	std::cout << (*up.get()) << std::endl;
+	std::cout << (*p) << std::endl;
+
+	// my unique ptr
+	int* p1 = new int(44);
+	My_Unique_ptr<int,DebugDelete> idel(p1, DebugDelete());
+	My_Unique_ptr<int,DebugDelete> idel2(new int(2));
+
+	idel.reset(new int(10));
+	std::cout << "get pointer 1: " << (*idel.get()) << std::endl;
+	std::cout << "int pointer: " << (*p1) << std::endl;
+	std::cout << "released pointer 2: " << *(idel2.release()) << std::endl;
+	
+}
+
 int main() {
 	
+	Exercise16_28();
+	std::cout << std::endl;
 	Exercise16_22();
 	Exercise16_24();
 	unqTest();
