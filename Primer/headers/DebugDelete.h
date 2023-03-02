@@ -6,10 +6,10 @@
 
 class DebugDelete {
 public:
-	DebugDelete(std::ostream &s = std::cerr) : os(s) {}
+	DebugDelete(std::ostream &s = std::cout) : os(s) {}
 
-	template <typename T> void operator()(T* p) const {
-		os << "deleting unique_ptr" << std::endl; 
+	template <typename T> void operator()(T* p,std::string name  = "pointer") const {
+		os << "DEBUG DELETE: deleting " << name << std::endl; 
 		delete p;
 	}
 
