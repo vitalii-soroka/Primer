@@ -175,6 +175,7 @@
     <ClInclude Include="headers\Quote.h" />
     <ClInclude Include="headers\Sales_data.h" />
     <ClInclude Include="headers\Screen.h" />
+    <ClInclude Include="headers\shared_pointer.h" />
     <ClInclude Include="headers\SmallInt.h" />
     <ClInclude Include="headers\StrBlob.h" />
     <ClInclude Include="headers\Vec.h" />

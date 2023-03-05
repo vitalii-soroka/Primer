@@ -10,6 +10,7 @@
 #include "DebugDelete.h"
 #include "MyTextQuery.h"
 #include "my_unique_ptr.h"
+#include "shared_pointer.h"
 
 // Exercise 16.11 
 template <typename elemType> class ListItem;
@@ -201,6 +202,7 @@ void Exercise16_28() {
 	int* p = new int(55);
 	std::unique_ptr<int> up(p/*new int(3)*/);
 	up.reset(new int(4));
+	
 	std::cout << (*up.get()) << std::endl;
 	std::cout << (*p) << std::endl;
 
@@ -214,10 +216,36 @@ void Exercise16_28() {
 	std::cout << "int pointer: " << (*p1) << std::endl;
 	std::cout << "released pointer 2: " << *(idel2.release()) << std::endl;
 	
+	idel.reset(new int(10));
+	idel2.reset(new int(50));
+	idel.swap(idel2);
+	std::cout << *idel.get() << std::endl;
+	std::cout << *idel2 << std::endl;
+
+
+}
+void Exercise16_28_shared() {
+
+	std::shared_ptr<int> ss(new int(4));
+	shared_pointer<int> msp1(new int(1));
+	shared_pointer<int> msp3(new int(3));
+	msp1 = msp1;
+	msp1 = std::move(msp3);
+	std::cout << *msp1 << " " << msp1.use_count() << std::endl;
+	shared_pointer<int> msp4;
+	if (msp1) std::cout << " true " << std::endl;
+	std::cout << std::endl;
+	
+	// -> operator
+	std::vector<int> v{ 1,2,3,4 };
+	shared_pointer<std::vector<int>> shvec(new std::vector<int>());
+	shvec->push_back(2);
+	std::cout << shvec->front() << std::endl;
 }
 
 int main() {
-	
+
+	Exercise16_28_shared();
 	Exercise16_28();
 	std::cout << std::endl;
 	Exercise16_22();
