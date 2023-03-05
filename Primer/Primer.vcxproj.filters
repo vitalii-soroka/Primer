@@ -170,6 +170,9 @@
     <ClInclude Include="headers\my_unique_ptr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\shared_pointer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\text.txt" />
