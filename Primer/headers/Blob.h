@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "shared_pointer.h" // my shared pointer
 #include <memory>
 #include <string>
 #include <stdexcept>      // std::out_of_range
@@ -50,7 +51,8 @@ public:
 
 
 private:
-	std::shared_ptr<std::vector<T>> data;
+	shared_pointer<std::vector<T>> data;
+	//std::shared_ptr<std::vector<T>> data;
 	void check(size_type, const std::string&) const;
 
 	T& do_front() const;
@@ -88,7 +90,7 @@ void Blob<T>::pop_back() {
 
 template<typename T>
 T& Blob<T>::operator[](size_type i) {
-	check(i, "subscript " + i + " out of range");
+	check(i, "subscript out of range");
 	return data->at(i);
 }
 

@@ -108,11 +108,11 @@ void Exercise16_12() {
 	Blob<int> blob1({1,2,3});
 	Blob<int> blob2({1,2,3});
 
-	BlobPtr<int> blobptr1(blob1,2);
+	/*BlobPtr<int> blobptr1(blob1,2);
 	BlobPtr<int> blobptr2(blob1,0);
 	std::cout << "BlobPtr's not equal: " << (blobptr1 != blobptr2) << std::endl;
 	std::cout << "BlobPtr's smaller: " << (blobptr1 < blobptr2) << std::endl;
-	std::cout << *(--blobptr1) << std::endl;
+	std::cout << *(--blobptr1) << std::endl;*/
 }
 void Exercise16_14() {
 	Screen<2,5> screen('c');
@@ -208,8 +208,8 @@ void Exercise16_28() {
 
 	// my unique ptr
 	int* p1 = new int(44);
-	My_Unique_ptr<int,DebugDelete> idel(p1, DebugDelete());
-	My_Unique_ptr<int,DebugDelete> idel2(new int(2));
+	unique_pointer<int,DebugDelete> idel(p1, DebugDelete());
+	unique_pointer<int,DebugDelete> idel2(new int(2));
 
 	idel.reset(new int(10));
 	std::cout << "get pointer 1: " << (*idel.get()) << std::endl;
@@ -229,6 +229,7 @@ void Exercise16_28_shared() {
 	std::shared_ptr<int> ss(new int(4));
 	shared_pointer<int> msp1(new int(1));
 	shared_pointer<int> msp3(new int(3));
+	// ss.reset(new int(4));
 	msp1 = msp1;
 	msp1 = std::move(msp3);
 	std::cout << *msp1 << " " << msp1.use_count() << std::endl;
@@ -241,12 +242,77 @@ void Exercise16_28_shared() {
 	shared_pointer<std::vector<int>> shvec(new std::vector<int>());
 	shvec->push_back(2);
 	std::cout << shvec->front() << std::endl;
+
+	// reset pointer
+	std::cout << std::endl;
+	shared_pointer<int> spointer(new int(88));
+	spointer.reset(new int(99));
+	std::cout << "after reset: " << *spointer << std::endl << std::endl;
+}
+void Exercise16_29_30() {
+
+	// Blob uses my shared_pointer
+	Blob<std::string> blob({"hey","lol"});
+	std::cout << blob[0] << std::endl;
+
+}
+
+
+
+/* -------------------------Template conversions-----------------------------
+	const conversions and array or function to pointer are the only automatic
+	conversions for arguments to parameters with template types.
+	Normal conversions are applied to arguments whose types is not a template.
+----------------------------------------------------------------------------*/
+template <typename T> void fobj(T, T) { }; // copy arguments
+template <typename T> void fref(const T&, const T&) {}; // reference arguments
+
+void templateTest() {
+	std::string s1("a value");
+	const std::string s2("b value");
+	fobj(s1, s2); // const is ignored for copy
+	fref(s1, s2); // converts to const
+
+	int a[10], b[42], c[10];
+	fobj(a, b); // ok calls f(int*,int*)
+	//fref(a, b); // takes by references, error types don't match int[10],int[42]
+	fref(a, c); // ok types match int[10],int[10];
+
+}
+
+void Exercise16_34() {
+	// fref("hi", "world"); // error: const char[3], const char[6]
+	fref("bey", "dad"); // ok type const char(&)[4]
+}
+
+template <typename T> void calc(T, int) {};
+template <typename T> void fcn(T, T) {};
+void Exercise16_35() {
+	double d = 0.5; float f = 1; char c = 'c';
+	calc(c, 'c');  // ok: T is char, 'c' converted to int - not template
+	calc(d, f);	   // ok: T is double, float converted to int -
+	fcn(c,'c'); // ok: T is char, 'c' is also char
+	//fcn(d,f);   // error: T is double and float can't convert
+}
+
+template <typename T> void f1(T, T) {};
+template <typename T1, typename T2> void f2(T1, T2) {};
+void Exercise16_36() {
+	int i = 0, j = 42, *p1 = &i, *p2 = &j;
+	const int* cp1 = &i, * cp2 = &j;
+	f1(p1, p2);  // ok, type is int*
+	f2(p1, p2);  // ok types are int*
+	f1(cp1,cp2); // ok, type is const int*
+	f2(cp1, cp2);// ok, types is const int*
+	// f1(p1,cp1);// error: T1 int* and const int*
+	f2(p1, cp1); // ok types are T1 int* and T2 const int*
 }
 
 int main() {
 
+	Exercise16_29_30();
 	Exercise16_28_shared();
-	Exercise16_28();
+	/*Exercise16_28();
 	std::cout << std::endl;
 	Exercise16_22();
 	Exercise16_24();
@@ -262,7 +328,7 @@ int main() {
 	Exercise16_5();
 	Exercise16_4();
 	Exercise16_3();
-	Exercise16_2();
+	Exercise16_2();*/
 
 	return 0;
 }
