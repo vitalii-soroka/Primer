@@ -307,6 +307,26 @@ void Exercise16_36() {
 	// f1(p1,cp1);// error: T1 int* and const int*
 	f2(p1, cp1); // ok types are T1 int* and T2 const int*
 }
+void Exercise16_37() {
+	// std::max(5,7.8) // error: T not match 
+	std::max<int>(2.3, 3);
+}
+void Exercise16_38() {
+	// internet says:
+	// without specified type given, make_shared has no possibility to
+	// to determine how big the size it should allocate.
+}
+
+template <typename T>
+int compare(const T& v1, const T& v2) {
+	if (v1 < v2) return -1; if (v2 < v1) return 1; return 0;
+}
+
+void Exercise16_39() {
+	// compare("sss", "aaaa"); error: const char[4], const char[5]
+	compare<std::string>("sss", "aaaa"); // ok: explicit determined as string
+}
+
 
 int main() {
 
