@@ -10,8 +10,7 @@
 #include <set>
 #include <memory>
 #include <string>
-#include "DebugDelete.h">
-
+#include "DebugDelete.h"
 
 using line_no = std::vector<std::string>::size_type;
 class MyQueryResult;

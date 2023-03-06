@@ -9,34 +9,30 @@
 template <
 	typename T,
 	class Deleter = DebugDelete>
-class My_Unique_ptr {
+class unique_pointer {
 public:
 	// constructors
-	My_Unique_ptr() : pointer(nullptr), deleter() {}
+	unique_pointer() : pointer(nullptr), deleter() {}
 	//
-	My_Unique_ptr(T* item, Deleter&& d = DebugDelete()) 
+	unique_pointer(T* item, Deleter&& d = DebugDelete()) 
 		: pointer(item), deleter(std::move(d)) {}
-	My_Unique_ptr(My_Unique_ptr&& rhs) : 
+	unique_pointer(unique_pointer&& rhs) : 
 		pointer(rhs.pointer) { rhs.pointer = nullptr; }
 
-
-	~My_Unique_ptr() { deleter(pointer); }
+	~unique_pointer() { deleter(pointer); }
 
 	// operators
 	T& operator*() const { return *pointer; }
-	My_Unique_ptr& operator=(My_Unique_ptr&&) noexcept;
-	My_Unique_ptr& operator=(nullptr_t np) noexcept;
+	unique_pointer& operator=(unique_pointer&&) noexcept;
+	unique_pointer& operator=(nullptr_t np) noexcept;
 
 	// functions
 	T* get() const { return pointer; }
 	T* release() { T* p = pointer; pointer = (T*)nullptr; return p; }
 	void reset(T* p = (T*)nullptr) { delete pointer; pointer = p; }
-	void swap(My_Unique_ptr&);
+	void swap(unique_pointer&);
 
-	const Deleter get_deleter() const {
-		return deleter;
-	}
-
+	const Deleter get_deleter() const { return deleter;}
 
 private:
 	T* pointer;
@@ -44,8 +40,8 @@ private:
 };
 
 template<typename T, class Deleter>
-inline My_Unique_ptr<T,Deleter>& 
-My_Unique_ptr<T, Deleter>::operator=(My_Unique_ptr&& rhs) noexcept {
+inline unique_pointer<T,Deleter>& 
+unique_pointer<T, Deleter>::operator=(unique_pointer&& rhs) noexcept {
 	if (this->pointer != rhs.pointer) {
 		deleter(pointer);
 		pointer = nullptr;
@@ -57,7 +53,7 @@ My_Unique_ptr<T, Deleter>::operator=(My_Unique_ptr&& rhs) noexcept {
 }
 
 template<typename T, class Deleter>
-inline void My_Unique_ptr<T, Deleter>::swap(My_Unique_ptr<T,Deleter>& right){
+inline void unique_pointer<T, Deleter>::swap(unique_pointer<T,Deleter>& right){
 	using std::swap;
 	swap(this->pointer, right.pointer);
 	swap(this->deleter,right.deleter);

@@ -23,7 +23,8 @@ template <typename T> class BlobPtr {
 
 public:
 	BlobPtr() : curr(0) {}
-	BlobPtr(Blob<T>& a, size_t sz = 0) : wptr(a.data), curr(sz) { }
+	// temp data while Blob uses own shared_pointer
+	//BlobPtr(Blob<T>& a, size_t sz = 0) : wptr(/*a.data*/), curr(sz) { }
 
 	T& operator*() const {
 		auto p = check(curr, "dereference past end");
