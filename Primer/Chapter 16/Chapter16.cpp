@@ -1,12 +1,14 @@
 #include <iostream>
 #include <fstream>
-#include "Sales_data.h"
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <type_traits> // remove_pointer, remove_reference
+
 #include "BlobPtr.h"
 #include "Screen.h"
 #include "Vec.h"
+#include "Sales_data.h"
 #include "DebugDelete.h"
 #include "MyTextQuery.h"
 #include "my_unique_ptr.h"
@@ -257,13 +259,12 @@ void Exercise16_29_30() {
 
 }
 
-
-
 /* -------------------------Template conversions-----------------------------
 	const conversions and array or function to pointer are the only automatic
 	conversions for arguments to parameters with template types.
 	Normal conversions are applied to arguments whose types is not a template.
 ----------------------------------------------------------------------------*/
+
 template <typename T> void fobj(T, T) { }; // copy arguments
 template <typename T> void fref(const T&, const T&) {}; // reference arguments
 
@@ -327,9 +328,61 @@ void Exercise16_39() {
 	compare<std::string>("sss", "aaaa"); // ok: explicit determined as string
 }
 
+/* ----------------------------- Trailing return -----------------------------
+Trailing return lets declare the return type after the parameter list is seen
+----------------------------------------------------------------------------*/
+template <typename It>
+auto fcn_auto(It beg, It end) -> decltype(*beg) {
+	// process the range
+	return *beg; // return a reference to an element from the range
+}
+// using type_traits
+template <typename It>
+auto fcn_rmv_ref(It beg, It end) ->
+typename std::remove_reference<decltype(*beg)>::type {
+	// process range
+	return *beg; // return a copy of an element from the range
+}
+void Exercise_Trailing_return() {
+	std::vector<int> ivec{ 1,2,3,4 };
+	// can assign int& and int
+	int& rch = fcn_auto(ivec.begin(), ivec.end());
+	rch = 25; 
+	std::cout << *ivec.begin() << std::endl;
+
+	// can't return and assign reference
+	int ch = fcn_rmv_ref(ivec.begin(), ivec.end());
+
+	
+}
+
+// 199 value doesn't matter, only type that yields ( <type> + int ) 
+template <typename It>
+auto fcn3(It beg, It end) -> decltype(*beg + 199) {
+	return *beg;
+}
+void Exercise16_40() {
+	// function is legal, but only types that supports + operator,
+	// return type depends on result of sum operations
+	std::string s("string");
+	auto ref = fcn3(s.begin(), s.end());
+	// example 
+	std::cout << "fcn3(): " << ref << " , " << (*s.begin() + 0) << std::endl;
+}
+
+template <typename A, typename B>
+auto sum_large(A a, B b) -> decltype(a + b){
+	return a + b;
+}
+void Exercise16_41() {
+	auto sum = sum_large(123456789123456789,1);
+}
 
 int main() {
 
+	Exercise16_41();
+	Exercise16_40();
+	Exercise_Trailing_return();
 	Exercise16_29_30();
 	Exercise16_28_shared();
 	/*Exercise16_28();
