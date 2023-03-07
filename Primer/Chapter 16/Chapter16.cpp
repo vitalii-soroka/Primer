@@ -378,8 +378,83 @@ void Exercise16_41() {
 	auto sum = sum_large(123456789123456789,1);
 }
 
+/* --------------------------- Function pointers ----------------------------
+When the address of a function-template instantiation is taken, the context
+must be such that it allows a unique type or value to be determined fro each
+template parameter.
+----------------------------------------------------------------------------*/
+
+// overload pfunc
+int (*pf1)(const  int&, const int&) = _compare;
+void pfunc(int(*)(const int&, const int&)) {};
+void pfunc(int(*)(const std::string&, const std::string&)) {};
+void funcPointers() {
+	// pfunc(_compare); //error
+	pfunc(_compare<std::string>); // ok: explicity specify which pfunc;
+}
+
+/* ------------------------- Reference collapsing ----------------------------
+Reference collapsing applies only when a reference to a reference is created
+indirectly, such as in type alias or a template parameters.
+-----
+An argument of any type can be passed to a function parameter that is an 
+rvalue reference to a template parameter type (i.e., T&&). When an lvalue is 
+passed to such a parameter, the function parameter is instantiated as an
+ordinary, lvalue reference (T&).
+----------------------------------------------------------------------------*/
+template <typename T> void f3(T&& val) {
+	T t = val; // copy or binding a reference?
+	//t = fcn(t); // does the assignment change only t or val and t?
+	if(val == t) { /* */ } // always true if T is a reference type
+};
+// it's better to overload
+template <typename T> void _fref(T&&) {};		// binds to nonconst rvalues
+template <typename T> void _fref(const T&) {};  // lvalues and const rvalues
+void Exercise16_42() {
+	int i = 3; int& ri = i; const int ci = 4;
+	f3(i);		// int& illustration code : void f3<int&>(int& &&); 
+	f3(ri);		// int&
+	f3(ci);		// const int&
+	f3(4);		// int&& - rvalue
+	f3(i * ci); // int && - return rvalue
+}
+void Exercise16_43() {
+	int i = 3; const int ci = 4;
+	f3(i = ci);	// int& - return lvalue after assign 
+}
+template <typename T> void g16_44(T) {};
+template <typename T> void gc16_44(const T&) {};
+void Exercise16_44() {
+	int i = 3; const int ci = 4;
+	g16_44(i);		// int, copy value 
+	g16_44(ci);		// int, copy value 
+	g16_44(i * ci); // int, copy rvalue
+
+	gc16_44(i);		// int, takes const lvalue reference
+	gc16_44(ci);	// int, takes const lvalue reference
+	gc16_44(i * ci);// int, takes const rvalue reference
+	//        ^^ if not const in declaration, call will be error
+}
+
+template <typename T> void g16_45(T&& val) { 
+	std::vector<std::remove_reference<T>> v;
+	// remove reference ^^^^^^^^^^^^^ when int& passed
+}
+void Exercise16_45() {
+	int a = 2;
+	g16_45(42); // T - is int, vector of ints
+	g16_45(a);  // T - is int&, vector<int&> is an error :( 
+	//ok : if we remove reference in function.
+
+	
+} 
 int main() {
 
+	Exercise16_45();
+	Exercise16_44();
+	Exercise16_43();
+	Exercise16_42();
+	funcPointers();
 	Exercise16_41();
 	Exercise16_40();
 	Exercise_Trailing_return();
