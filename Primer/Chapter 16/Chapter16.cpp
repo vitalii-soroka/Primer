@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <type_traits> // remove_pointer, remove_reference
+#include <sstream> // string stream
 
 #include "BlobPtr.h"
 #include "Screen.h"
@@ -29,7 +30,6 @@ private:
 	//       ^^^^^^^^ - same
 
 };
-
 
 template <typename T>
 int _compare(const T& v1, const T& v2);
@@ -353,7 +353,7 @@ void Exercise_Trailing_return() {
 	// can't return and assign reference
 	int ch = fcn_rmv_ref(ivec.begin(), ivec.end());
 
-	
+
 }
 
 // 199 value doesn't matter, only type that yields ( <type> + int ) 
@@ -435,7 +435,6 @@ void Exercise16_44() {
 	gc16_44(i * ci);// int, takes const rvalue reference
 	//        ^^ if not const in declaration, call will be error
 }
-
 template <typename T> void g16_45(T&& val) { 
 	std::vector<std::remove_reference<T>> v;
 	// remove reference ^^^^^^^^^^^^^ when int& passed
@@ -448,8 +447,135 @@ void Exercise16_45() {
 
 	
 } 
+
+/* ----------------------------- ST::MOVE ------------------------------------
+A function parameter that is an rvalue reference to a template type parameter
+(i.e., T&&) preserves the constNess and lvalue/rvalue property of its 
+corresponding argument.
+--
+When used with a function parameter that is an rvalue reference to template
+type parameter (T&&), forward preserves all the details about an argument type.
+--
+As with std::move, it's a good idea not to provide a using declaration for 
+std::forward. 
+----------------------------------------------------------------------------*/
+template <typename T>
+typename std::remove_reference<T>::type&& my_move(T&& t) {
+	return 
+		static_cast<typename std::remove_reference<T>::type&&>(t);
+}
+void my_move_test() {
+	std::string s1(std::string("hi!")), s2;
+	s2 = std::move("bye!"); // ok: moving from an rvalue
+	// ^^ call: string && my_move(string &&t);
+	s2 = std::move(s1);					 // ok: but after assignment s1 has indeterminate
+	// ^^ call: string && my_move(string &t);
+	int i = 10;
+	// flip(_f, i, 42); hmm
+}
+// Exercise 16 47
+template<typename F, typename T1, typename T2>
+void my_flip(F f, T1&& t1, T2&& t2)
+{
+	f(std::forward<T2>(t2), std::forward<T1>(t1));
+}
+void my_f1(int& t1, int& t2)
+{
+	std::cout << t1 << " " << t2 << std::endl;
+}
+void my_f2(int&& t1, int&& t2)
+{
+	std::cout << t1 << " " << t2 << std::endl;
+}
+void my_Flip_Test() {
+	int i = 9, j = 7;
+	my_flip(my_f1, i, j); 
+	std::cout << "Flip lvalue: " << i << " " << j << std::endl;
+}
+/* ------------------------- Overloaded templates --------------------------
+When there are several overloaded templates that provide an equally 
+good match for a call, the most specialized version is preferred.
+--
+when a non template function provides an equally good match for a call 
+as a function template, the non template version is preferred.
+--------------------------------------------------------------------------*/
+// Ex 16.48
+// prints (T) object
+template <typename T> std::string debug_rep(const T& t) {
+	std::ostringstream ret;
+	ret << t;		  // T's output operator to print t
+	return ret.str(); // copy of string to which ret is bound
+}
+// prints (T*) pointers
+template <typename T> std::string debug_rep(T* p) {
+	std::ostringstream ret;
+	ret << "pointer: " << p;		 // prints the pointer's own value 
+	if (p)
+		ret << " " << debug_rep(*p); // prints the value to which p points
+	else
+		ret << " null pointer";		 // print if(p) is false = null pointer
+	return ret.str();				 // copy of string to which ret is bound
+}
+// prints non template string
+std::string debug_rep(const std::string& s) {
+	return '"' + s + '"';
+}
+// prints C style strings
+std::string debug_rep(char* p) {
+	return debug_rep(std::string(p));
+}
+std::string debug_rep(const char* p) {
+	return debug_rep(std::string(p));
+}
+void Debug_rep_Test() {
+	std::string s("hi");
+	int* sNull = nullptr;
+	const char* pchar("hello\0");
+	std::cout << debug_rep(s) << std::endl;
+	std::cout << debug_rep(&s) << std::endl;
+	std::cout << debug_rep(sNull) << std::endl;
+	std::cout << debug_rep(pchar) << std::endl;
+}
+//
+template <typename T> void f(T) { std::cout << "f(T) called" << std::endl; }
+template <typename T> void f(const T*) { std::cout << "f(const T*) called" << std::endl; }
+template <typename T> void g(T) { std::cout << "g(T) called" << std::endl; }
+template <typename T> void g(T*) { std::cout << "g(T*) called" << std::endl; }
+void Exercise16_50() {
+	int i = 42, *p = &i;
+	const int ci = 0, *p2 = &ci;
+	g(42); // <int> g(int)
+	g(p);  // <int> g(int*)
+	g(ci); // <int> g(int)
+	g(p2); // <int> g(int*)
+	//
+	f(42); // <int> f(int)
+	f(p);  // <int*> f(int*)
+	f(ci); // <int> f(int)
+	f(p2)  // <int> f(const int*)
+
+
+
+
+
+
+}
+
+/* --------------------------- Variadic Templates ---------------------------
+
+----------------------------------------------------------------------------*/
+template <typename T, typename... Args>
+void foo(const T& t, const Args& ...rest) {
+
+}
+void Exercise16_51() {
+	
+}
+
 int main() {
 
+	Debug_rep_Test();
+	my_Flip_Test();
 	Exercise16_45();
 	Exercise16_44();
 	Exercise16_43();
