@@ -27,6 +27,9 @@ public:
 
 	~StrVec() { free(); }
 
+	// Exercise 16.58
+	template <class... Args> void emplace_back(Args&&...);
+
 	void push_back(const std::string&); // copy element
 	void push_back(std::string&&);		// move element
 
@@ -53,3 +56,10 @@ private:
 	std::string* first_free;
 	std::string* cap;
 };
+
+template <class... Args>
+void StrVec::emplace_back(Args&&... args) {
+	chk_n_alloc();
+	alloc.construct(first_free++,
+		std::forward<Args>(args)...);
+}

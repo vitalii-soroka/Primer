@@ -19,11 +19,11 @@ void Exercise14_5() {
 void Exercise14_10() {
 	// 1 good
 	// 2 basic obj // wrong 
-	Sales_data d1, d2;
-	std::cin >> d1;
-	std::cin >> d2;
-	std::cout << d1 << std::endl;
-	std::cout << d2 << std::endl;
+	//Sales_data d1, d2;
+	//std::cin >> d1;
+	//std::cin >> d2;
+	//std::cout << d1 << std::endl;
+	//std::cout << d2 << std::endl;
 
 }
 void Exercise14_16() {
@@ -157,14 +157,16 @@ void Exercise14_44() {
 void SmallIntTest() {
 	SmallInt si;
 	si = 4;
-	auto n = static_cast<int>(si) + 3;
+	// commented due to added hash
+	//auto n = static_cast<int>(si) + 3;
 } 
 void Exercise14_45() {
-	Sales_data a("bookno",10,30);
-	double d = 4.0 + static_cast<double>(a);
-	std::string str("Hello");
-	auto s = static_cast<std::string>(a) + str;
-	std::cout << d << " " << s << std::endl;
+	// commented due to added hash
+	//Sales_data a("bookno",10,30);
+	// double d = 4.0 + static_cast<double>(a);
+	//std::string str("Hello");
+	//auto s = static_cast<std::string>(a) + str;
+	// std::cout << d << " " << s << std::endl;
 
 }
 
