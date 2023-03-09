@@ -5,10 +5,12 @@
 #include <vector>
 #include <type_traits> // remove_pointer, remove_reference
 #include <sstream> // string stream
+#include <unordered_set>
 
 #include "BlobPtr.h"
 #include "Screen.h"
 #include "Vec.h"
+#include "StrVec.h"
 #include "Sales_data.h"
 #include "DebugDelete.h"
 #include "MyTextQuery.h"
@@ -291,7 +293,7 @@ template <typename T> void fcn(T, T) {};
 void Exercise16_35() {
 	double d = 0.5; float f = 1; char c = 'c';
 	calc(c, 'c');  // ok: T is char, 'c' converted to int - not template
-	calc(d, f);	   // ok: T is double, float converted to int -
+	calc(d, (int) f);	   // ok: T is double, float converted to int -
 	fcn(c,'c'); // ok: T is char, 'c' is also char
 	//fcn(d,f);   // error: T is double and float can't convert
 }
@@ -310,7 +312,7 @@ void Exercise16_36() {
 }
 void Exercise16_37() {
 	// std::max(5,7.8) // error: T not match 
-	std::max<int>(2.3, 3);
+	// std::max<int>(2.3, 3);
 }
 void Exercise16_38() {
 	// internet says:
@@ -466,7 +468,7 @@ typename std::remove_reference<T>::type&& my_move(T&& t) {
 }
 void my_move_test() {
 	std::string s1(std::string("hi!")), s2;
-	s2 = std::move("bye!"); // ok: moving from an rvalue
+	//s2 = std::move("bye!"); // ok: moving from an rvalue
 	// ^^ call: string && my_move(string &&t);
 	s2 = std::move(s1);					 // ok: but after assignment s1 has indeterminate
 	// ^^ call: string && my_move(string &t);
@@ -521,9 +523,11 @@ std::string debug_rep(const std::string& s) {
 	return '"' + s + '"';
 }
 // prints C style strings
+template<> // ex 16.65
 std::string debug_rep(char* p) {
 	return debug_rep(std::string(p));
 }
+template<> // ex 16.65
 std::string debug_rep(const char* p) {
 	return debug_rep(std::string(p));
 }
@@ -542,8 +546,8 @@ template <typename T> void f(const T*) { std::cout << "f(const T*) called" << st
 template <typename T> void g(T) { std::cout << "g(T) called" << std::endl; }
 template <typename T> void g(T*) { std::cout << "g(T*) called" << std::endl; }
 void Exercise16_50() {
-	int i = 42, *p = &i;
-	const int ci = 0, *p2 = &ci;
+	int i = 42, * p = &i;
+	const int ci = 0, * p2 = &ci;
 	g(42); // <int> g(int)
 	g(p);  // <int> g(int*)
 	g(ci); // <int> g(int)
@@ -552,28 +556,230 @@ void Exercise16_50() {
 	f(42); // <int> f(int)
 	f(p);  // <int*> f(int*)
 	f(ci); // <int> f(int)
-	f(p2)  // <int> f(const int*)
-
-
-
-
-
-
+	f(p2);  // <int> f(const int*)
 }
 
 /* --------------------------- Variadic Templates ---------------------------
 
 ----------------------------------------------------------------------------*/
 template <typename T, typename... Args>
-void foo(const T& t, const Args& ...rest) {
-
+void fooArgs(const T& t, const Args& ...rest) {
+	std::cout << "Number of type parameters: " << sizeof...(Args) << std::endl;
+	std::cout << "Number of function parameters: " << sizeof...(rest) << std::endl;
 }
 void Exercise16_51() {
+	int i = 0, i2 = 1; double d = 3.14; std::string s = "how now brown cow";
+	fooArgs(i, s, 42, d); //  3 , 3
+	fooArgs(s, 42, "hi"); //  2 , 2
+	fooArgs(d, s);		  //  1 , 1 
+	fooArgs("hi");        //  0 , 0
+}
+
+// function to end the recursion and print the last elements
+template <typename T>
+std::ostream& printVariadic(std::ostream &os, const T &t) {
+	return os << t;
+}
+// version of print will be called for all but the last element in pack
+template <typename T, typename... Args>
+std::ostream& printVariadic(std::ostream& os, const T& t, const Args&... rest) {
+	os << t << ", ";				   // print the first element
+	return printVariadic(os, rest...); // recursive call - print other arguments
 	
+}
+
+void Exercise16_53() {
+	int i = 0, i2 = 1; double d = 3.14; std::string s = "how now brown cow";
+	printVariadic(std::cout, i) << std::endl;
+	printVariadic(std::cout, i,s,42) << std::endl;
+	printVariadic(std::cout, i,d,s,i2,101) << std::endl;
+	
+}
+void Exercise16_54() {
+	Blob<int> blob({ 1,2,3 });
+	//printVariadic(std::cout,1,blob) << std::endl; 
+	// << no operator found     ^^^^ 
+}
+void Exercise16_55() {
+	// no matching overloaded function found when in rest no args,
+	// because other print will not be visible
+}
+/* ----------------------------- Pack Expansion -----------------------------
+The pattern in an expansion applies separately to each element in pack.
+----------------------------------------------------------------------------*/
+template <typename... Args>
+std::ostream& errorMsg(std::ostream& os, const Args&... rest) {
+	// print(os, rep(a1),rep(a2) ... rep(an) vv
+	return printVariadic(os, debug_rep(rest)...);
+
+	// passes the pack to debug_rep; print(os,debug_rep(a1,a2,...an))
+	// print(os, debug_rep(rest...); // error: no match
+}
+void Exercise16_56() {
+	int* i = new int(32);
+	errorMsg(std::cout, 1, i, "hello") << std::endl;
+
+}
+/* ----------------------- Forwarding Parameter Pack -------------------------
+Added emplace_back to StrVec.
+----------------------------------------------------------------------------*/
+
+void Exercise16_59() {
+	std::string s("Hello");
+	StrVec svec;
+	// calls s - lvalue emplace_back<string&>(string &) and passes to construct string& (not &&)
+	// would call string class type's copy constructor to copy construct a new string 
+	// object allocated in dynamic memory
+	svec.emplace_back(s);
+	std::cout << s << std::endl;
+	s = "new Hello";
+	std::cout << *svec.begin() << std::endl;
+}
+void Exercise16_60() {
+	// function make_shared behaves almost like emplace_back illustrated in section 16.4.3;
+	// make_shared should be a variadic template function that forwards all arguments 
+	// to underlying constructors that allocate and initializes an object in dynamic memory 
+	// and build a shared_ptr by wrapping the raw pointer.
+}
+// Exercise 16.61
+template <typename _Ty, class..._Types>
+std::shared_ptr<_Ty> my_make_shared(_Types&&... args) {
+	return std::shared_ptr<_Ty>(new _Ty(std::forward<_Types>(args)...));
+}
+void Exercise16_61() {
+	auto n = my_make_shared<int>(55);
+	std::cout << *n << std::endl;
+}
+/* ----------------------- Template Specializations -------------------------
+	Specializations instantiate a template; they do not overload it.
+As a result, specializations do not affect function matching.
+--
+Templates and their specializations should be declared in the same header file.
+Declarations for all the templates with a given name should appear first,
+followed by any specializations of those templates.
+----------------------------------------------------------------------------*/
+template <typename T> int Tcompare(const T&, const T&) { return 0; }
+
+// handle string literals
+template <size_t N, size_t M>
+int Tcompare(const char(&)[N], const char(&)[M]) { return 0; }
+//	const char *p1 = "hi", *p2 = "mom";
+//  compare(p1,p2);			// calls the first template (not ok)
+//	compare("hi","mom");	// calls the second template
+
+// handles pointers to characters arrays, but doesn't participate in matching
+template <>
+int Tcompare(const char* const& p1, const char* const& p2) {
+	return std::strcmp(p1, p2);
+}
+
+/* --------------------- Class Template Specializations ----------------------
+We can partially specialize only a class template. We cannot partially
+specialize a function template.
+----------------------------------------------------------------------------*/
+template <class T> struct Cremove_reference {
+	typedef T type;
+};
+// partial specializations will be used for lvalue and rvalue references
+template <class T> struct Cremove_reference<T&> // lvalue ref
+{ typedef T type; };
+template <class T> struct Cremove_reference<T&&> // rvalue ref
+{ typedef T type; };
+
+void  partial_specializations_test() {
+	int i  = 66;
+	// delctype(42) is int, uses the original template
+	Cremove_reference<decltype(42)>::type a;
+	// decltype(i) is int&, uses first (T&) partial specialization
+	Cremove_reference<decltype(i)>::type b;
+	// decltype(std::move(i)) is int&&, uses second T&& partial specialization
+	Cremove_reference<decltype(std::move(i))>::type c;
+
+	// ! a,b,c have type int
+	// so due to partial specialization T& T&& we can extract type T
+
+}
+
+template <typename T> struct Foo {
+	Foo(const T &t = T()) : mem(t){ }
+	void Bar() { /*...*/ }
+	T mem;
+	// other members
+};
+template<>				// specializing a template
+void Foo<int>::Bar()	// specializing the Bar of Foo <int>
+{
+	// do anything that applies to int
+	
+	// Foo<string> fs;  // instantiates Foo<string>::Foo()
+	// fs.Bar();		// instantiates Foo<string>::Bar()
+	// Foo<int> fi;		// instantiates Foo<int>::Foo()
+	// fi.Bar();		// uses our specialization of Foo<int>::Bar()
+}
+//
+void Exercise16_62() {
+	std::unordered_multiset<Sales_data> Saleset;
+	Saleset.emplace("Book1",2,10);
+	Saleset.emplace("Book2",4,16);
+	Saleset.emplace("Book3",5,23);
+
+	std::for_each(Saleset.begin(), Saleset.end(), 
+		[](auto const& x) { std::cout << x << std::endl; });
+}
+//
+template <typename T>
+int countOccur(const std::vector<T>& vec, T v) {
+	int count = 0;
+	std::for_each(vec.cbegin(), vec.cend(),
+		[&](auto const& x) { if (x == v) ++count; });
+	return count;
+}
+template <>
+int countOccur(const std::vector<const char*>& vec, const char* cp) {
+	int count = 0;
+	std::for_each(vec.cbegin(), vec.cend(),
+		[&](auto const& x) { if (std::strcmp(cp, x) == 0) ++count; });
+	return count;
+}
+void Exercise16_63() {
+	std::vector<int> ivec{ 1,2,3,1,1 };
+	std::vector<double> dvec{ 1.1,2.2,3.3,1.1,2.2 };
+	std::vector<std::string> svec{ "hello","hello","no","no","fine"};
+	std::string s("no");
+
+	std::cout << "1 occurs: " << countOccur(ivec, 1) << std::endl;
+	std::cout << "2.2 occurs: " << countOccur(dvec, 2.2) << std::endl;
+	std::cout << s << " occurs: " << countOccur(svec,s) << std::endl;
+
+}
+void Exercise16_64() {
+	const char* cp("yes");
+	std::vector<const char*> cpvec{ "yes","no","yes","yes","no"};
+	std::cout << cp << "  occurs: " << countOccur(cpvec, "yes") << std::endl;
+}
+void Exercise16_66_67() {
+	// overloading changes the function match.
+	// specialization doesn't change match
+	// hidden convertions will not be possible ?
+
+	// Template specialization would not influence the match process of function;
+	// for that template specialization is a instance of a template,
+	// not an overload of it.
+
 }
 
 int main() {
 
+	Debug_rep_Test();
+	Exercise16_64();
+	Exercise16_63();
+	Exercise16_62();
+	Exercise16_61();
+	Exercise16_59();
+	Exercise16_56();
+	Exercise16_53();
+	Exercise16_51();
+	/* 
 	Debug_rep_Test();
 	my_Flip_Test();
 	Exercise16_45();
@@ -586,7 +792,7 @@ int main() {
 	Exercise_Trailing_return();
 	Exercise16_29_30();
 	Exercise16_28_shared();
-	/*Exercise16_28();
+	Exercise16_28();
 	std::cout << std::endl;
 	Exercise16_22();
 	Exercise16_24();
@@ -602,7 +808,8 @@ int main() {
 	Exercise16_5();
 	Exercise16_4();
 	Exercise16_3();
-	Exercise16_2();*/
+	Exercise16_2();
+	*/
 
 	return 0;
 }

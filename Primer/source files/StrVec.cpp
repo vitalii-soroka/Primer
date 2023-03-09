@@ -1,6 +1,8 @@
 #pragma once
 #include "StrVec.h";
 
+
+
 StrVec::StrVec(std::initializer_list<std::string> ilst)
 {
 	auto newdata = alloc_n_copy(ilst.begin(), ilst.end());
@@ -18,7 +20,6 @@ StrVec::StrVec(StrVec&& s) noexcept :
 {
 	s.elements = s.first_free = s.cap = nullptr;
 }
-
 StrVec& StrVec::operator=(StrVec&& rhs) noexcept
 {
 	if (this != &rhs) {

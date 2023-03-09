@@ -7,7 +7,7 @@ public:
 		if (i < 0 || i > 255)
 			throw std::out_of_range("Bad SmallInt Value");
 	}
-	explicit operator int() const { return val; }
+	explicit operator int() const { return (int)val; }
 private:
 	std::size_t val;
 };
