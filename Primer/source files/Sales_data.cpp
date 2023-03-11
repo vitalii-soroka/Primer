@@ -1,5 +1,14 @@
 #include "Sales_data.h"
 
+bool operator<(const Sales_data& lhs, const Sales_data& rhs)
+{
+    return lhs.isbn() < rhs.isbn();
+}
+
+bool compareIsbn(const Sales_data& lhs, const Sales_data
+    & rhs) {
+    return lhs.isbn() < rhs.isbn();
+}
 
 Sales_data::Sales_data(const Sales_data& rhs)
 {

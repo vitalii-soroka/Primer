@@ -768,51 +768,51 @@ void Exercise16_66_67() {
 
 }
 
-int main() {
-
-	Debug_rep_Test();
-	Exercise16_64();
-	Exercise16_63();
-	Exercise16_62();
-	Exercise16_61();
-	Exercise16_59();
-	Exercise16_56();
-	Exercise16_53();
-	Exercise16_51();
-	/* 
-	Debug_rep_Test();
-	my_Flip_Test();
-	Exercise16_45();
-	Exercise16_44();
-	Exercise16_43();
-	Exercise16_42();
-	funcPointers();
-	Exercise16_41();
-	Exercise16_40();
-	Exercise_Trailing_return();
-	Exercise16_29_30();
-	Exercise16_28_shared();
-	Exercise16_28();
-	std::cout << std::endl;
-	Exercise16_22();
-	Exercise16_24();
-	unqTest();
-	Exercise16_20();
-	Exercise16_19();
-	Exercise16_16();
-	Exercise16_15();
-	Exercise16_14();
-	Exercise16_12();
-	Exercise16_7();
-	Exercise16_6();
-	Exercise16_5();
-	Exercise16_4();
-	Exercise16_3();
-	Exercise16_2();
-	*/
-
-	return 0;
-}
+//int main() {
+//
+//	Debug_rep_Test();
+//	Exercise16_64();
+//	Exercise16_63();
+//	Exercise16_62();
+//	Exercise16_61();
+//	Exercise16_59();
+//	Exercise16_56();
+//	Exercise16_53();
+//	Exercise16_51();
+//	/* 
+//	Debug_rep_Test();
+//	my_Flip_Test();
+//	Exercise16_45();
+//	Exercise16_44();
+//	Exercise16_43();
+//	Exercise16_42();
+//	funcPointers();
+//	Exercise16_41();
+//	Exercise16_40();
+//	Exercise_Trailing_return();
+//	Exercise16_29_30();
+//	Exercise16_28_shared();
+//	Exercise16_28();
+//	std::cout << std::endl;
+//	Exercise16_22();
+//	Exercise16_24();
+//	unqTest();
+//	Exercise16_20();
+//	Exercise16_19();
+//	Exercise16_16();
+//	Exercise16_15();
+//	Exercise16_14();
+//	Exercise16_12();
+//	Exercise16_7();
+//	Exercise16_6();
+//	Exercise16_5();
+//	Exercise16_4();
+//	Exercise16_3();
+//	Exercise16_2();
+//	*/
+//
+//	return 0;
+//}
 
 template<typename T>
 int _compare(const T& v1, const T& v2)
