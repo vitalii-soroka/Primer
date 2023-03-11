@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Chapter 17\Chapter17.cpp" />
     <ClCompile Include="source files\Basket.cpp" />
     <ClCompile Include="Chapter 12\Chapter12.cpp" />
     <ClCompile Include="Chapter 13\Chapter13.cpp" />

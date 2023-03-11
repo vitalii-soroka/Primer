@@ -5,12 +5,17 @@
 #ifndef SALES_DATA_H
 #define SALES_DATA_H
 	
+class Sales_data;
 
 template<class T> struct std::hash; // for friend declaration
 
+bool compareIsbn(const Sales_data&, const Sales_data&);
+
+
 class Sales_data {
 	friend std::hash<Sales_data>;
-
+	friend bool operator<(const Sales_data&, const Sales_data&);
+	friend bool compareIsbn(const Sales_data&, const Sales_data&);
 	friend std::istream& operator>>(std::istream&, Sales_data&);
 	friend std::ostream& operator<<(std::ostream&, const Sales_data&);
 	friend Sales_data& operator+(const Sales_data&, const Sales_data&);

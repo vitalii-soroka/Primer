@@ -87,6 +87,9 @@
     <ClCompile Include="Chapter 16\Chapter16.cpp">
       <Filter>Chapter16</Filter>
     </ClCompile>
+    <ClCompile Include="Chapter 17\Chapter17.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\numbered.h">
