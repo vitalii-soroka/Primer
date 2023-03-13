@@ -1,11 +1,18 @@
 #include <iostream>
-#include <tuple>
-#include <vector>
-#include <bitset>		
+#include <sstream>
 #include <string>
+#include <vector>
+#include <set>
+
+#include <random>
+#include <tuple>
+#include <bitset>		
+#include <regex>        // regular expressions
+
 #include <algorithm>	// equal_range
 #include <numeric>      // accumulate
 #include "Sales_data.h"
+
 
 /* -------------------------------- Tuple ----------------------------------
 
@@ -15,9 +22,9 @@ void Exercise17_1_2() {
 	std::tuple<int, int, int> int_tuple{ 10,20,30 };
 	using std::string;
 	std::tuple<string,
-			std::vector<string>, 
-			std::pair<string, 
-			int>> complex_tuple;
+		std::vector<string>,
+		std::pair<string,
+		int>> complex_tuple;
 
 }
 void Exercise17_3() {
@@ -51,7 +58,7 @@ findBook(const std::vector<std::vector<Sales_data>>& files,
 }
 
 void reportResults(std::istream& in, std::ostream& os,
-	const std::vector<std::vector<Sales_data>> &files) {
+	const std::vector<std::vector<Sales_data>>& files) {
 	std::string s; // book to look for
 
 	while (in >> s) {
@@ -85,12 +92,12 @@ pair_findBook(const std::vector<std::vector<Sales_data>>& files,
 	std::vector<pair_matches> ret; //empty
 
 	for (auto it = files.cbegin(); it != files.cend(); ++it) {
-		
+
 		auto found = std::equal_range(it->cbegin(),
 			it->cend(), book, compareIsbn);
 		if (found.first != found.second) {
 			ret.push_back(std::make_pair(it - files.cbegin(),
-				std::make_pair(found.first,found.second)));
+				std::make_pair(found.first, found.second)));
 		}
 	}
 	return ret;
@@ -103,9 +110,9 @@ void Exercise17_5() {
 /* ---------------- Exercise 17.6 --------------- */
 template <typename _size_t, typename _It>
 struct my_match {
-	my_match(_size_t i, _It b, _It e) 
+	my_match(_size_t i, _It b, _It e)
 		: index(i), begin(b), end(e) {}
-	
+
 	_It begin, end;
 	size_t index;
 };
@@ -119,10 +126,10 @@ without_findBook(std::vector<std::vector<Sales_data>>& files,
 	std::vector<my_matches> ret; //empty
 
 	for (auto it = files.cbegin(); it != files.cend(); ++it) {
-		auto found = std::equal_range(it->cbegin(),it->cend(),
+		auto found = std::equal_range(it->cbegin(), it->cend(),
 			book /* Sales_data < operator used */);
 		if (found.first != found.second) {
-			my_matches match(it - files.cbegin(),found.first,found.second);
+			my_matches match(it - files.cbegin(), found.first, found.second);
 			ret.push_back(match);
 		}
 	}
@@ -155,14 +162,14 @@ void Exercise17_9() {
 	std::cout << bv.to_string() << std::endl;
 
 	// takes string from input, crop to 8 bits
-	std::string bstr;	
+	std::string bstr;
 	std::cin >> bstr;
 	std::bitset<8>bvs(bstr);
 	std::cout << bvs.to_string() << std::endl;
 }
 /* ---------------- Exercise 17.10 --------------- */
 void Exercise17_10() {
-	std::bitset<64> bset;		 
+	std::bitset<64> bset;
 	std::pair<size_t, size_t> prev{ 1,2 }; // pair of n-1 and n-2 elements
 	bset.set(0);						   // initial indexes
 	bset.set(1);
@@ -183,8 +190,8 @@ struct Quiz {
 	Quiz(const std::string& answ) : answers(answ) {}
 	Quiz(unsigned long long num) : answers((std::string)num) {}
 
-	std::ostream& print(std::ostream& os) const  {
-		/*for (size_t i = 0; i != _size_t; ++i) 
+	std::ostream& print(std::ostream& os) const {
+		/*for (size_t i = 0; i != _size_t; ++i)
 			os << i + 1 << " ";
 
 		os << std::endl;
@@ -195,7 +202,7 @@ struct Quiz {
 		os << answers.to_string();
 		return os;
 	}
-	bool check(std::size_t i, bool expected = true) const  {
+	bool check(std::size_t i, bool expected = true) const {
 		return expected == answers.test(i);
 	}
 	void update(std::size_t i, bool expected = true) {
@@ -214,14 +221,14 @@ private:
 
 // grade method 
 template <std::size_t _size_t>
-std::pair<std::size_t,std::size_t>
+std::pair<std::size_t, std::size_t>
 get_grade(Quiz<_size_t> a, Quiz<_size_t> b) {
 
 	std::size_t grade = 0;
 	for (std::size_t i = 0; i != _size_t; ++i) {
 		if (a.check(i) == b.check(i)) ++grade;
 	}
-	return std::make_pair(grade,_size_t);
+	return std::make_pair(grade, _size_t);
 }
 
 void Exercise17_11_12_13() {
@@ -240,9 +247,345 @@ void Exercise17_11_12_13() {
 
 }
 
-/* ---------------- Exercise 17.10 --------------- */
+/* -------------------------- Regular Expression ----------------------------
+	Syntactic correctness of a regular expression is evaluated at a run time
+--
+	compiling regular expression can be a surprisingly slow operation.
+	avoid creating more regex object that needed,
+	f.e - create outside the loop
+----------------------------------------------------------------------------*/
+void regular_Expression() {
+	// find ei follow any character except c
+	std::string pattern("[^c]ei");
+	// whole word in which pattern appears
+	pattern = "[[:alpha:]]*" + pattern + "[[:alpha:]]*";
+	std::regex reg(pattern, std::regex::icase);
+	std::smatch results;		// object to hold the result
+	// test string
+	std::string test_str = "receipt freind object to hold the result theif";
+	for (std::sregex_iterator
+		it(test_str.begin(), test_str.end(), reg),
+		end_it; it != end_it; ++it)
+	{
+		auto pos = it->prefix().length();   // size of prefix
+		pos = pos > 40 ? pos - 40 : 0;		// we want up to 40 characters
+		std::cout << it->prefix().str().substr(pos)  // last part of the suffix
+			<< "\n\t\t>>> " << it->str() << " <<<\n" // matched word
+			<< it->suffix().str().substr(0, 40)
+			<< std::endl;
+	}
+
+	//if (std::regex_search(test_str, results, reg)) { // if match
+	//	std::cout << results.str() << std::endl;
+	//}
+}
+void regex_file_search() {
+	std::regex reg("([[:alnum:]]+)\\.(cpp|cxx|cc)$", std::regex::icase);
+	std::smatch result;
+	std::string filename;
+	while (std::cin >> filename) {
+		if (std::regex_search(filename, result, reg)) {
+			std::cout << result.str(1) << std::endl; // print current match
+		}
+	}
+}
+void regex_error_test() {
+	try {
+		// missing ] bracket, throws regex_error
+		std::regex r("[[:alnum:]+\\.(cpp|cxx|cc)$", std::regex::icase);
+	}
+	catch (std::regex_error e) {
+		std::cout << e.what() << "\ncode: " << e.code() << std::endl;
+	}
+}
+
+/* ---------------- Exercise 17.15-16 --------------- */
+void regex_read_check(const std::string& pattern, const std::string& name = "") {
+	//std::string pattern, input;
+	//pattern = "[[:alpha:]]*[^c]ei[[:alpha:]]*";
+	std::string input;
+	std::regex reg(pattern);
+	std::smatch result;
+	while (std::cin >> input) {
+		std::cout << "word"
+			<< (std::regex_match(input, result, reg) ? " " : " doesn't")
+			<< " contains " << name << " rule" << std::endl;
+	}
+}
+void Exercise17_15() {
+	std::string pattern("[[:alpha:]]*[^c]ei[[:alpha:]]*");
+	regex_read_check(pattern, "..[^c]ei..");
+}
+void Exercise17_16() {
+	regex_read_check("[^c]ei", "[^cei]");
+}
+
+/* ---------------- Exercise 17.18 --------------- */
+void Exercise17_18() {
+	std::set<std::string> dict{ "albeit","neighbor" }; // set of ei
+	std::string ei_pattern("[[:alpha:]]*[^c]ei[[:alpha:]]*");
+	std::string input("label movei albeit before freind after neighbor theif");
+
+	std::regex reg(ei_pattern, std::regex::icase);
+	std::smatch match;
+
+	for (std::sregex_iterator end_it, it(input.begin(), input.end(), reg);
+		it != end_it; ++it)
+	{
+		// if no word in dictionary - that's mistake
+		if (dict.find(it->str()) != dict.end()) continue;
+		// count index for suffix and prefix display size
+		size_t pos = it->prefix().length();
+		pos = pos > 5 ? pos - 5 : 0;
+
+		std::cout
+			<< it->prefix().str().substr(pos)
+			<< it->str()
+			<< it->suffix().str().substr(0, 5)
+			<< std::endl;
+	}
+}
+
+/* ---------------- Exercise 17.19 --------------- */
+// Ex 17.19 It's okay to call m[4].str() without checking match, 
+// because m[4] and m[6] should be equal, if no match then
+// they both are equal
+
+/* ---------------- Exercise 17.20 --------------- */
+bool number_is_valid(const std::smatch& m) {
+
+	std::regex r(" +"); // for any number of spaces
+	
+	if (m[1].matched)  // if open parenthesis before area code
+		// the area must be followed by a close parenthesis
+		// and followed immediately by the rest of the numbers or space
+		return m[3].matched &&
+		(m[4].matched == 0 || std::regex_match(m[4].str(), r));
+	else
+		// then there can't be a close after the area code
+		// the delimiters between the others two components must match
+		return !m[3].matched
+		&& std::regex_match(m[4].str(), r)
+		&& std::regex_match(m[6].str(), r);
+
+
+	return true;
+}
+void numbers_test(const std::string& number) {
+	std::string phone_pattern
+		= "(\\()?(\\d{3})(\\))?([-.])?(\\d{3})([-.])?(\\d{4}))";
+
+	std::regex reg(phone_pattern);
+	std::smatch match;
+	std::string line;
+
+	// for each record
+	while (std::getline(std::cin, line)) {
+		// for each matching phone
+		for (std::sregex_iterator it(line.begin(), line.end(), reg), end_it;
+			it != end_it; ++it) {
+			if (number_is_valid(*it)) {
+				std::cout << "valid: " << it->str() << std::endl;
+			}
+			else {
+				std::cout << "not valid: " << it->str() << std::endl;
+			}
+		}
+	}
+}
+
+/* ---------------- Exercise 17.21 --------------- */
+struct PeronInfo {
+	std::string name;
+	std::vector<std::string> phones;
+};
+void Exercise17_21_22() {
+
+	PeronInfo person1; person1.name = "Bob"; person1.phones 
+		= {"3806362733","(380)676-7893"};
+	PeronInfo person2; person2.name = "David"; person2.phones 
+		= {"(380)6768903","380  676 8789"};
+
+	std::vector<PeronInfo> people{ person1,person2};
+
+	// ex 17.22
+	std::string pattern
+		= "(\\()?(\\d{3})(\\))?([-. ])?(\\d{3})([-. ])?(\\d{4})";
+	// ex 17.23
+	std::string pattern2
+		= "(\\()?(\\d{3})(\\))?(-|.| +)?(\\d{3})(-|.| +)?(\\d{4})";
+
+	std::regex r(pattern2);
+	std::smatch m;
+
+	// to do --
+	for (const auto& entry : people) { 
+		//std::ostringstream formatted, badNums; //
+		std::cout << entry.name << ": " << std::endl;
+		for (const auto& num : entry.phones) {
+				if (std::regex_match(num,m,r) && number_is_valid(m)) {
+					std::cout << "\tvalid: " << m.str() << std::endl;
+				}
+				else {
+					std::cout << "\tnot valid: " << num << std::endl;
+				}
+		}
+			//if (!valid(num)) {
+				// string in badNums
+				//badNums << " " << num;
+			//}
+			//else
+				//formatted << " ";// << format(num);
+		}
+	/*
+		//if (badNums.str().empty()) // there were no bad numbers
+		//	os << entry.name << " " // print the name
+		//	<< formatted.str() << endl; // and reformatted numbers
+		//else // otherwise, print the name and bad numbers
+		//	cerr << "input error: " << entry.name << " invalid number(s) " << badNums.str() <<
+		//	endl;
+	
+	}*/
+}
+void Exercise17_23() {
+	std::string zip_pattern = "(\\d{5})([/. ]?)(\\d{4})?";
+	std::regex r(zip_pattern);
+	std::smatch sm;
+	std::vector<std::string> zips{ "123451234","12345/","12345/1234","123"};
+
+	for (const auto& zip : zips) {
+		if (std::regex_match(zip, sm, r)) {
+			std::cout << "zip is valid: " << sm.str() << std::endl;
+		}
+		else {
+			std::cout << "zip is not valid: " << zip << std::endl;
+		}
+	}
+
+
+}
+
+/* ---------------- Exercise 17.24 --------------- */
+void reg_rep_test() {
+	std::string phone
+		= "(\\()?(\\d{3})(\\))?([-. ])?(\\d{3})([-. ])?(\\d{4})";
+	std::string fmt = "$2.$5.$7";
+
+	std::regex r(phone);
+	std::string number = "(908) 555-1800";
+	std::cout << std::regex_replace(number, r, fmt) << std::endl;
+}
+void Exercise17_24() {
+	std::string phone =
+		"(\\()?(\\d{3})(\\))?([-. ])?(\\d{3})([-. ])?(\\d{4})";
+	std::regex r(phone);
+	std::smatch m;
+	std::string s = "morgan (201)555-2368 862-555-0123";
+	std::string fmt = "$2.$5.$7"; //
+	// replace all occurncies 
+	std::cout << std::regex_replace(s, r, fmt) << std::endl;
+
+	using std::regex_constants::format_no_copy;
+	std::cout << "no copy: " << std::regex_replace(s, r, fmt, format_no_copy) << std::endl;
+	
+}
+/* ---------------- Exercise 17.25 --------------- */
+void Exercise17_25() {
+	std::string phone =
+		"(\\()?(\\d{3})(\\))?([-. ])?(\\d{3})([-. ])?(\\d{4})";
+
+	std::regex r(phone);
+	std::smatch m;
+	std::string s = "morgan (201)555-2368 862-555-0123";
+	std::string fmt = "$2.$5.$7"; //
+	// replace first occurnce
+
+	std::regex_search(s,m, r);
+	std::cout << "first only: " << m.prefix().str()
+		<< std::regex_replace(m.str(), r, fmt) <<
+		std::endl;
+
+	//std::cout << "first only: " << std::regex_replace(s, r, fmt,
+	//	std::regex_constants::format_first_only) << std::endl;
+}
+/* ---------------- Exercise 17.26 --------------- */
+void Exercise17_26() {
+	// temp solution
+	std::string phone =
+		"(\\()?(\\d{3})(\\))?([-. ])?(\\d{3})([-. ])?(\\d{4})";
+
+	std::regex r(phone);
+	std::smatch m;
+	std::string morgan = "morgan (201)555-2368 862-555-0123 056-455-3214";
+	std::string semen = "semen (201)555-2368";
+	std::vector<std::string> phones{morgan,semen};
+	std::string fmt = "$2.$5.$7"; //
+	
+	
+
+	for (auto& p : phones) {
+		bool f = true;
+		
+		for (std::sregex_iterator it(p.begin(), p.end(), r), next(it), end_it;
+			it != end_it; ++it)
+		{
+			if (f) {
+				std::cout << "without first: " << it->prefix().str();
+				f = !f;
+				if (++next == end_it) 
+					std::cout << std::regex_replace(it->str(), r, fmt);
+				continue;
+			}
+			std::cout << it->prefix() << std::regex_replace(it->str(), r, fmt);
+		}
+		std::cout << std::endl;
+	}
+
+	std::cout << std::endl;
+}
+/* ---------------- Exercise 17.27 --------------- */
+void Exercise17_27() {
+	std::string zip("(\\d{5})([-. ])?(\\d{4})");
+	std::regex r(zip);
+	std::string codes("12345 1234 123451234 12345.1234");
+	std::string fmt = "$1-$3";
+	std::cout << std::regex_replace(codes, r, fmt) << std::endl;
+}
+/* ---------------- Exercise 17.28 --------------- */
+unsigned Exercise17_28(unsigned min = 0, unsigned max = 100) {
+	// declare as static, to not generate same random number on every call 
+	static std::default_random_engine e;
+	static std::uniform_int_distribution<unsigned> u(min, max);
+	return u(e);
+}
+unsigned Exercise17_29(
+	unsigned seed = std::default_random_engine::default_seed,
+	unsigned min = 0,
+	unsigned max = 100) {
+
+	static std::default_random_engine engine(seed);
+	static std::uniform_int_distribution<unsigned> u(min, max);
+
+	return u(engine);
+}
 
 int main() {
+
+	std::cout << Exercise17_28() << std::endl;
+	std::cout << Exercise17_28() << std::endl;
+	Exercise17_27();
+	Exercise17_26();
+	Exercise17_25();
+	Exercise17_24();
+	reg_rep_test();
+	Exercise17_23();
+	Exercise17_21_22();
+	regex_file_search();
+	Exercise17_18();
+	regular_Expression();
+	Exercise17_16();
+	Exercise17_15();
+	regex_error_test();
 	Exercise17_11_12_13();
 	Exercise17_10();
 	Exercise17_9();
