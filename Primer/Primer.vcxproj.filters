@@ -179,5 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\text.txt" />
+    <Text Include="data\marker.txt" />
+    <Text Include="data\mymarker.txt" />
   </ItemGroup>
 </Project>
