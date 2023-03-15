@@ -3,11 +3,14 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <map>
+#include <fstream>		// file stream
 
 #include <random>
 #include <tuple>
 #include <bitset>		
 #include <regex>        // regular expressions
+#include <iomanip>      // io manipulators that takes arguments
 
 #include <algorithm>	// equal_range
 #include <numeric>      // accumulate
@@ -551,6 +554,9 @@ void Exercise17_27() {
 	std::string fmt = "$1-$3";
 	std::cout << std::regex_replace(codes, r, fmt) << std::endl;
 }
+/* -------------------------- Random Numbers -------------------------------
+bernoulli_distribution
+----------------------------------------------------------------------------*/
 /* ---------------- Exercise 17.28 --------------- */
 unsigned Exercise17_28(unsigned min = 0, unsigned max = 100) {
 	// declare as static, to not generate same random number on every call 
@@ -558,7 +564,8 @@ unsigned Exercise17_28(unsigned min = 0, unsigned max = 100) {
 	static std::uniform_int_distribution<unsigned> u(min, max);
 	return u(e);
 }
-unsigned Exercise17_29(
+/* ---------------- Exercise 17.28-30 --------------- */
+unsigned Exercise17_29_30(
 	unsigned seed = std::default_random_engine::default_seed,
 	unsigned min = 0,
 	unsigned max = 100) {
@@ -568,9 +575,237 @@ unsigned Exercise17_29(
 
 	return u(engine);
 }
+/* ---------------- Exercise 17.31 --------------- */
+// same values will be on every loop
+/* ---------------- Exercise 17.33 --------------- */
+// resp will be out of scope in while
+/* ---------------- Exercise 17.33 --------------- */
+// small version
+void Exercise17_33() {
+	static std::default_random_engine e(time(0));	// somewhat random
+	// filling word map
+	std::map<std::string, std::vector<std::string>> word_map;
+	word_map["k"] = { "okay","ok","good" };
+	word_map["y"] = { "why" };
+	word_map["u"] = { "you","yuo"};
+	word_map["thk"] = { "thanks", "thank you", "ty" };
+	// sample text
+	std::string text = "Are you k ? y dont u send me ? k thk";
+	// stream to read words in string
+	std::istringstream isstream(text);
+	// each word
+	std::string word;
+	// while not end of string
+	while (isstream >> word) {
+		auto map_it = word_map.find(word);
+		// no word in map if find == end iterator
+		if (map_it != word_map.cend()) {
+			std::uniform_int_distribution<unsigned> u(0, map_it->second.size() - 1);
+			// i know about this extra space, i'm too lazy
+			std::cout << " " << map_it->second[u(e)];
+		}
+		else
+			std::cout << " " << word;
+	}
+	std::cout << std::endl;
+}
+/* -------------------------- IO Library Revisited -------------------------------
+endl is manipulator, writes newline and flush the buffer
+--
+hex, oct, dec affects only integral operands; floating point values is unaffected
+--
+setprecision and other manipulators that takes arguments are defined in the
+iomanip header
+--
+unless you need to control the presentation of floating number,(money, percentage),
+usually best let the libraty choose the notation
+--
+setw, like endl doesn't change the internal state of output stream.
+----------------------------------------------------------------------------*/
 
+/* ---------------- Exercise 17.34 ----------------- */
+void formatIO_test() {
+
+	std::cout << 10.0 << std::endl;
+	std::cout << std::showpoint << 10.0 << std::noshowpoint << std::endl;
+
+	std::cout << "default format: " << 100 * std::sqrt(2.0) << '\n'
+		<< "scientific: " << std::scientific << 100 * std::sqrt(2.0) <<
+		'\n'
+		<< "fixed decimal: " << std::fixed << 100 * std::sqrt(2.0) <<
+		'\n'
+		<< "hexadecimal: " << std::hexfloat << 100 * std::sqrt(2.0) <<
+		'\n'
+		<< "use defaults: " << std::defaultfloat << 100 * std::sqrt(2.0) <<
+		"\n\n";
+
+
+	std::cout << "Precision: " << std::cout.precision()
+		<< ", Value: " << std::sqrt(2.0) << std::endl;
+
+	std::cout.precision(12);
+	std::cout << "Precision: " << std::cout.precision()
+		<< ", Value: " << std::sqrt(2.0) << std::endl;
+
+	std::cout << std::setprecision(3);
+	std::cout << "Precision: " << std::cout.precision()
+		<< ", Value: " << std::sqrt(2.0) << std::endl;
+
+	std::cout << "default bool values: " << true << " " << false
+		<< "\nalpha bool values: " << std::boolalpha
+		<< true << " " << false << std::noboolalpha << std::endl;
+
+	std::cout << std::uppercase << std::showbase;
+	std::cout << "default: " << 20 << " " << 1024 << std::endl;
+	std::cout << "octal: " << std::oct << 20 << " " << 1024 << std::endl;
+	std::cout << "hex: " << std::hex << 20 << " " << 1024 << std::endl;
+	std::cout << "decimal: " << std::dec << 20 << " " << 1024
+		<< std::nouppercase << std::noshowbase << std::endl;
+}
+void padFormat_test() {
+	char ch;
+	std::cin >> std::noskipws;
+	while (std::cin >> ch) {
+		std::cout << ch;
+	}
+	std::cin >> std::skipws;
+
+	int i = -16;
+	double d = 3.14159;
+	// pad the first column to use a minimum of 12 positions in the output
+	std::cout << "i: " << std::setw(12) << i << "next col" << '\n'
+		<< "d: " << std::setw(12) << d << "next col" << '\n';
+
+	// pad the first column and left-justify all columns
+	std::cout << std::left
+		<< "i: " << std::setw(12) << i << "next col" << '\n'
+		<< "d: " << std::setw(12) << d << "next col" << '\n'
+		<< std::right;		// restore normal justification 
+
+	// pad the first column and right-justify all collumns
+	std::cout << std::right
+		<< "i: " << std::setw(12) << i << "next col" << '\n'
+		<< "d: " << std::setw(12) << d << "next col" << '\n';
+
+	// pad the first column but put the padding internal to the field
+	std::cout << std::internal
+		<< "i: " << std::setw(12) << i << "next col" << '\n'
+		<< "d: " << std::setw(12) << i << "next col" << '\n';
+
+	// pad the first column, using # as the pad characters
+	std::cout << std::setfill('#')
+		<< "i: " << std::setw(12) << i << "next col" << '\n'
+		<< "d: " << std::setw(12) << d << "next col" << '\n'
+		<< std::setfill(' '); // restore the normal pad characters
+}
+/* ---------------- Exercise 17.35 ----------------- */
+void Exercise17_35() {
+	std::cout << "hexadecimal: " << std::uppercase
+		<< std::hexfloat << 100 * sqrt(2.0)
+		<< "\n\n" << std::defaultfloat << std::nouppercase;
+}
+/* ---------------- Exercise 17.36 ----------------- */
+void Exercise17_36() {
+	using std::setw;
+	using std::left;
+	using std::right;
+
+	auto num = 100 * std::sqrt(2.0);
+
+	std:: cout 
+	<< left << setw(15) << "default:" << setw(25) << right << num << '\n'
+	<< left << setw(15) << "scientific:" << std::scientific << setw(25) << right << num << '\n'
+	<< left << setw(15) << "fixed decimal:" << setw(25) << std::fixed << right << num << '\n'
+	<< left << setw(15) << "hexidecimal:" << setw(25) << std::hexfloat << right << num << '\n'
+	<< left << setw(15) << "default float:" << setw(25) << std::defaultfloat << right << num
+	<< "\n\n";
+
+}
+/* ---------------- Exercise 17.37-- ----------------- */
+void unformatted_Input() {
+	/*char ch;
+	while (std::cin.get(ch)) 
+		std::cout.put(ch);*/	
+	int ch;
+	while ((ch = std::cin.get()) != EOF) 
+		std::cout.put(ch);
+		
+}
+/* ---------------- Exercise 17.38 ----------------- */
+void Exercise17_38() {
+	std::ifstream file("data/text.txt");
+	char p[32]; // using as array not pointer to array to output
+	while (file.getline(p,32,' ')) { // read word until ' ' or up to 32 characters 
+		std::cout << p << std::endl;
+	}
+
+}
+/* ---------------- Exercise 17.39 ----------------- */
+void Exercise17_39() {
+	std::fstream inOut("data/marker.txt", std::fstream::ate | std::fstream::in | std::fstream::out);
+	if (!inOut) {
+		std::cerr << "Unable to open file!" << std::endl;
+		throw EXIT_FAILURE;
+	}
+	// inOut is opened in ate mode, so it starts at the end
+	auto end_mark = inOut.tellg();		// remember end of file pos
+	inOut.seekg(0, std::fstream::beg);  // reposition to start of the file
+	std::size_t cnt = 0;			    // accumulator for the byte count
+	std::string line;					// hold each line of input
+	// while haven't hit an error and still not end of file, get new line
+	while (inOut && inOut.tellg() != end_mark && std::getline(inOut,line)) {
+		cnt += line.size() + 1;			// +1 taking into account newline character '\n'
+		auto mark = inOut.tellg();		// remember position 
+		inOut.seekg(0, std::fstream::end);// set write marker to the end
+
+		inOut << cnt;					// write length
+		// print separator if not last line
+		if (mark != end_mark) inOut << " ";
+
+		inOut.seekg(mark);				// restore the read poisiton
+	}
+	inOut.seekg(0, std::fstream::end);
+	inOut << "\n";
+}
+/* ---------------- Exercise 17.39 ----------------- */
+void Exercise17_39_my() {
+	std::fstream file("data/mymarker.txt", std::fstream::ate | std::fstream::in | std::fstream::out);
+	if (!file) {
+		std::cerr << "Can't open file!" << std::endl;
+		return;
+	}
+	
+	auto end_pos = file.tellg();  // end of file position
+	file.seekg(0, std::fstream::beg); // set to start
+	std::string line;
+	std::size_t count = 0;
+
+	while (file && file.tellg() != end_pos && std::getline(file,line)) {
+		
+		count += line.size() + 1;
+		auto mark_pos = file.tellg();
+
+		file.seekg(0, std::fstream::end);
+		file << count;
+
+		if (mark_pos != end_pos) file << " ";
+
+		file.seekg(mark_pos);
+	}
+	file.seekg(0, std::fstream::end);
+	file << '\n';
+}
 int main() {
 
+	Exercise17_39_my();
+	//Exercise17_39();
+	Exercise17_38();
+	unformatted_Input();
+	Exercise17_36();
+	Exercise17_35();
+	padFormat_test();
+	/*formatIO_test();
+	Exercise17_33();
 	std::cout << Exercise17_28() << std::endl;
 	std::cout << Exercise17_28() << std::endl;
 	Exercise17_27();
@@ -588,5 +823,5 @@ int main() {
 	regex_error_test();
 	Exercise17_11_12_13();
 	Exercise17_10();
-	Exercise17_9();
+	Exercise17_9();*/
 }

@@ -186,6 +186,8 @@
     <ClInclude Include="headers\TreeNode.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="data\marker.txt" />
+    <Text Include="data\mymarker.txt" />
     <Text Include="data\text.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
