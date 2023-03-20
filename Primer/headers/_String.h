@@ -15,7 +15,7 @@ public:
 	_String(const char*);
 	_String(const _String&);
 	_String(_String&&) noexcept;
-	_String& operator=(_String&&) noexcept;
+	_String& operator=(_String&&) throw(); // same as noexept()
 	_String& operator=(const _String&);
 	char& operator[](std::size_t n) { return elements[n]; }
 	const char& operator[](std::size_t n) const { return elements[n]; }

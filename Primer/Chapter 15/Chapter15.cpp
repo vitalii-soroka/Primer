@@ -6,6 +6,8 @@
 #include "MyGeometry.h"
 #include "Query_base.h"
 
+using namespace chapter15;
+
 void Exercise15_6() {
 	Quote quote("q_book", 50);
 	Bulk_quote bulk_quote("bq_book", 50, 3, 0.5);
