@@ -795,33 +795,34 @@ void Exercise17_39_my() {
 	file.seekg(0, std::fstream::end);
 	file << '\n';
 }
-int main() {
 
-	Exercise17_39_my();
-	//Exercise17_39();
-	Exercise17_38();
-	unformatted_Input();
-	Exercise17_36();
-	Exercise17_35();
-	padFormat_test();
-	/*formatIO_test();
-	Exercise17_33();
-	std::cout << Exercise17_28() << std::endl;
-	std::cout << Exercise17_28() << std::endl;
-	Exercise17_27();
-	Exercise17_26();
-	Exercise17_25();
-	Exercise17_24();
-	reg_rep_test();
-	Exercise17_23();
-	Exercise17_21_22();
-	regex_file_search();
-	Exercise17_18();
-	regular_Expression();
-	Exercise17_16();
-	Exercise17_15();
-	regex_error_test();
-	Exercise17_11_12_13();
-	Exercise17_10();
-	Exercise17_9();*/
-}
+//int main() {
+//
+//	Exercise17_39_my();
+//	//Exercise17_39();
+//	Exercise17_38();
+//	unformatted_Input();
+//	Exercise17_36();
+//	Exercise17_35();
+//	padFormat_test();
+//	/*formatIO_test();
+//	Exercise17_33();
+//	std::cout << Exercise17_28() << std::endl;
+//	std::cout << Exercise17_28() << std::endl;
+//	Exercise17_27();
+//	Exercise17_26();
+//	Exercise17_25();
+//	Exercise17_24();
+//	reg_rep_test();
+//	Exercise17_23();
+//	Exercise17_21_22();
+//	regex_file_search();
+//	Exercise17_18();
+//	regular_Expression();
+//	Exercise17_16();
+//	Exercise17_15();
+//	regex_error_test();
+//	Exercise17_11_12_13();
+//	Exercise17_10();
+//	Exercise17_9();*/
+//}

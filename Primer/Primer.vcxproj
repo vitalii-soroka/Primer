@@ -134,6 +134,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Chapter 17\Chapter17.cpp" />
+    <ClCompile Include="Chapter18\Chapter18.cpp" />
+    <ClCompile Include="Chapter19\Chapter19.cpp" />
     <ClCompile Include="source files\Basket.cpp" />
     <ClCompile Include="Chapter 12\Chapter12.cpp" />
     <ClCompile Include="Chapter 13\Chapter13.cpp" />
@@ -172,6 +174,7 @@
     <ClInclude Include="headers\my_unique_ptr.h" />
     <ClInclude Include="headers\numbered.h" />
     <ClInclude Include="headers\ioString.h" />
+    <ClInclude Include="headers\sales_except.h" />
     <ClInclude Include="headers\Query_base.h" />
     <ClInclude Include="headers\Quote.h" />
     <ClInclude Include="headers\Sales_data.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="headers\SmallInt.h" />
     <ClInclude Include="headers\StrBlob.h" />
     <ClInclude Include="headers\Vec.h" />
+    <ClInclude Include="headers\ZooAnimal.h" />
     <ClInclude Include="headers\_String.h" />
     <ClInclude Include="headers\StrVec.h" />
     <ClInclude Include="headers\TextQuery.h" />

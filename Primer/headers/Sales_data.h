@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include "sales_except.h"
 
 #ifndef SALES_DATA_H
 #define SALES_DATA_H

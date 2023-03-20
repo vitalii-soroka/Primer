@@ -25,6 +25,10 @@ Sales_data& Sales_data::operator=(const Sales_data& rhs)
     return *this;
 }
 Sales_data& Sales_data::operator+=(const Sales_data& rhs){
+    // ch18
+    if (isbn() != rhs.isbn())
+        throw isbn_mismatch("wrong isbn", isbn(), rhs.isbn());
+
     units_sold += rhs.units_sold;
     revenue += rhs.revenue;
     return *this;

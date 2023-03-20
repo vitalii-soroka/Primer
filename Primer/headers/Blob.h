@@ -68,8 +68,10 @@ template<typename T>
 Blob<T>::Blob() : data(std::make_shared<std::vector<T>>()){}
 
 template<typename T>
-Blob<T>::Blob(std::initializer_list<T> il):
-	data(std::make_shared<std::vector<T>>(il)) {}
+Blob<T>::Blob(std::initializer_list<T> il) try : 
+	data(std::make_shared<std::vector<T>>(il)) {
+}
+catch (const std::bad_alloc& e) { std::cerr << e.what() << std::endl; abort(); }
 
 template <typename T>
 template <typename It>
