@@ -188,6 +188,12 @@
     <ClInclude Include="headers\ZooAnimal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\miniScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Token.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\text.txt" />

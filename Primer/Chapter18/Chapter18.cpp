@@ -267,30 +267,34 @@ void Exercise18_20() {
 //foo(CADVehicle);//will not work, will work if Vehicle were public
 
 /* --------------- Exercise 18.22 ----------------- */
-using std::cout;
+namespace ex18_22_23 {
+	using std::cout;
+	using std::cout;
 struct A { public: A() { cout << "A"; } };
-struct B : public A {  B() : A() { cout << "B"; } };
-struct C : public B {  C() : B() { cout << "C"; } };
+				 struct B : public A { B() : A() { cout << "B"; } };
+				 struct C : public B { C() : B() { cout << "C"; } };
 struct X { public: X() { cout << "X"; } };
 struct Y { public: Y() { cout << "Y"; } };
-struct Z : public X, public Y { Z() : X(), Y() { cout << "Z"; } };
-struct MI : public C, public Z { MI() : C(), Z() { cout << "MI"; } };
+				 struct Z : public X, public Y { Z() : X(), Y() { cout << "Z"; } };
+				 struct MI : public C, public Z { MI() : C(), Z() { cout << "MI"; } };
 
-//  A, B, C ; X Y Z,MI; - construct order
-void Exercise18_22() {
-	MI x;
-	std::cout << std::endl;
-}
-/* --------------- Exercise 18.23 ----------------- */
-class D : public X, public C { public: D() : X(), C() { std::cout << "D"; } };
-void Exercise18_23() {
-	// all ok
-	D* pd = new D;
-	X* px = pd;
-	A* pa = pd;
-	B* pb = pd;
-	C* pc = pd;
-}
+				 //  A, B, C ; X Y Z,MI; - construct order
+				 void Exercise18_22() {
+					 MI x;
+					 std::cout << std::endl;
+				 }
+
+				 /* --------------- Exercise 18.23 ----------------- */
+				 class D : public X, public C { public: D() : X(), C() { std::cout << "D"; } };
+				 void Exercise18_23() {
+					 // all ok
+					 D* pd = new D;
+					 X* px = pd;
+					 A* pa = pd;
+					 B* pb = pd;
+					 C* pc = pd;
+				 }
+};
 /* --------------- Exercise 18.24 ----------------- */
 void Exercise18_24() {
 	//ZooAnimal* pb = new Panda("ying_yang");
@@ -311,7 +315,7 @@ struct Base1 {
 	virtual ~Base1() { std::cout << "Base1::~Base1() "; };
 };
 struct Base2 {
-	virtual void print() { std::cout << "Base2::print() " ; }
+	virtual void print() { std::cout << "Base2::print() "; }
 	virtual ~Base2() { std::cout << "Base2::~Base2() "; };
 };
 struct D1 : public Base1 {
@@ -322,7 +326,7 @@ struct D2 : public Base2 {
 	void print() override { std::cout << "D2::print()" << std::endl; }
 	~D2() override { std::cout << "D2::~D2() "; };
 };
-struct MII : public D1, public D2 { 
+struct MII : public D1, public D2 {
 	//void print() override { std::cout << "MII::print()" << std::endl; }
 	~MII() final { std::cout << "MII::~MII() "; };
 };
@@ -361,7 +365,7 @@ namespace ex18_26_27 {
 		double  dval;
 		char	cval;
 	private:
-		int		*id;
+		int* id;
 	};
 	struct Base2 {
 		void print(double) const {};
@@ -381,9 +385,9 @@ namespace ex18_26_27 {
 		void print(int val) const { Base1::print(val); }
 		void foo(double);
 	protected:
-		int					*ival;
+		int* ival;
 		std::vector<double>  dvec;
-	}; 
+	};
 
 	void Exercise18_26() {
 		MI mi;
@@ -414,7 +418,7 @@ namespace ex18_26_27 {
 		// (e)
 		sval[0] = Base1::cval;
 	}
-} 
+}
 /* --------------- Exercise 18.28  ----------------- */
 void dance(const Bear&) {}
 void rummage(const Raccoon&) {}
@@ -472,8 +476,8 @@ namespace ex18_29_30 {
 	private:
 		int num;
 	};
-	struct D1 : virtual public Base { 
-		D1() { cout << "D1() "; } 
+	struct D1 : virtual public Base {
+		D1() { cout << "D1() "; }
 		D1(const D1& d) : Base(d) { }
 		explicit D1(int n) : Base(n) {}
 	};
@@ -481,16 +485,16 @@ namespace ex18_29_30 {
 		D2() { cout << "D2() "; }
 		D2(const D1& d) : Base(d) { }
 		explicit D2(int n) : Base(n) { }
-	}; 
-	struct MI : public D1, public D2 { 
-		MI() { cout << "MI() "; } 
-		MI(const MI& mi) : Base(mi), D1(mi), D2(mi) { }
-		explicit MI(int n) : Base(n), D1(n), D2(n) { } 
 	};
-	struct Final : public MI, public Class { 
-		Final() { cout << "Final() "; } 
-		Final(const Final& f) : Base(f), MI(f) { } 
-		explicit Final(int n) : Base(n), MI(n) { } 
+	struct MI : public D1, public D2 {
+		MI() { cout << "MI() "; }
+		MI(const MI& mi) : Base(mi), D1(mi), D2(mi) { }
+		explicit MI(int n) : Base(n), D1(n), D2(n) { }
+	};
+	struct Final : public MI, public Class {
+		Final() { cout << "Final() "; }
+		Final(const Final& f) : Base(f), MI(f) { }
+		explicit Final(int n) : Base(n), MI(n) { }
 	};
 
 	void Exercise18_29() {
@@ -498,14 +502,14 @@ namespace ex18_29_30 {
 		Final fin; cout << endl;
 		// C: Class(), Base(), D1(), D2(), MI(), Class(), Final() // + correct
 		// D: in reverse order;
-		
+
 		// (b)
 		// one Base, two Class parts;
 
 		// (c)
 		Base* pb; Class* pc; MI* pmi; D2* pd2;
 		// pb = new Class; // compile error
-		pc = new Final;		
+		pc = new Final;
 		//pmi = pb;       // compile error
 		//pd2 = pmi;	  // 
 

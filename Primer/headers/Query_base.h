@@ -36,8 +36,8 @@ namespace chapter15 {
 
 	class WordQuery : public Query_base {
 		friend class Query;
-
-		WordQuery(const std::string& s) : query_word(s) {}
+	public:
+		explicit WordQuery(const std::string& s) : query_word(s) {}
 		QueryResult eval(const TextQuery& t) const override { return t.query(query_word); }
 		std::string rep() const override { return query_word; }
 
@@ -71,6 +71,7 @@ namespace chapter15 {
 
 	class AndQuery : public BinaryQuery {
 		friend Query operator& (const Query&, const Query&);
+	public:
 		AndQuery(const Query& left, const Query& right) : BinaryQuery(left, right, "&") {}
 
 		// concrete class : AndQuery inherits rep and defines pure virtual
@@ -80,6 +81,7 @@ namespace chapter15 {
 
 	class OrQuery : public BinaryQuery {
 		friend Query operator| (const Query&, const Query&);
+	public:
 		OrQuery(const Query& left, const Query& right) :
 			BinaryQuery(left, right, "|") {}
 		QueryResult eval(const TextQuery&) const;

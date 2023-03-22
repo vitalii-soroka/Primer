@@ -12,7 +12,6 @@ template<class T> struct std::hash; // for friend declaration
 
 bool compareIsbn(const Sales_data&, const Sales_data&);
 
-
 class Sales_data {
 	friend std::hash<Sales_data>;
 	friend bool operator<(const Sales_data&, const Sales_data&);
@@ -28,20 +27,23 @@ public:
 	Sales_data(const std::string& s, unsigned n = 0, double p = 0.0f) :
 		bookNo(s), units_sold(n), revenue(n* p) {}
 	Sales_data(const Sales_data&);
+	Sales_data(Sales_data&&) noexcept;
 	
 	Sales_data& operator=(const Sales_data&);
 	Sales_data& operator+=(const Sales_data&);
 	Sales_data& operator=(const std::string&);
-	
-	// explicit operator double() const { return revenue; }
-	//explicit operator std::string() const { return bookNo; }
+	Sales_data& operator=(Sales_data&&) noexcept;
+
+	~Sales_data() = default;
 
 	std::string isbn() const { return bookNo; }
 	Sales_data& combine(const Sales_data&);
 	double avg_price() const;
 
-private:
+	// explicit operator double() const { return revenue; }
+	//explicit operator std::string() const { return bookNo; }
 
+private:
 	std::string bookNo;
 	unsigned units_sold;
 	double revenue;
