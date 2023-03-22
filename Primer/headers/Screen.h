@@ -25,7 +25,11 @@ public:
 	char get() const { return contents[cursor]; }
 
 	Screen& move(pos r, pos c);
-
+	
+	static const pos Screen::* curpos() {
+		return &Screen::cursor;			
+	}
+	
 private:
 	pos cursor = 0;
 	pos height, width;
